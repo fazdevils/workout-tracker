@@ -1,0 +1,91 @@
+{
+	"info": {
+		"_postman_id": "587c743c-4eed-4a45-9223-10d482c189cf",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "list users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca05b0b4-dc59-4371-a323-ee5e63d02465",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let jsonData = pm.response.json();",
+							"let firstUser =_.head(jsonData);",
+							"pm.environment.set(\"user_id\", firstUser.id );",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb767581-6e9f-42bb-af2d-95a15b1c1375",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Returns correct usere\", function () {",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    let userId = pm.environment.get(\"user_id\");",
+							"    pm.expect(jsonData.id).to.eql(userId);",
+							"",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/users/{{user_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

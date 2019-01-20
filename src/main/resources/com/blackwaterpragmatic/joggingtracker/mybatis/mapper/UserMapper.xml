@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blackwaterpragmatic.joggingtracker.mybatis.mapper.UserMapper">
+
+	<select id="list" resultType="User">
+		select id, login, bitwiseRole
+		from Users
+		order by login
+	</select>
+
+	<select id="fetch" resultType="User">
+		select id, login, bitwiseRole
+		from Users
+		where id = #{id, jdbcType=INTEGER}
+	</select>
+
+	<select id="fetchPassword" resultType="String">
+		select password
+		from Users
+		where login = #{login, jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into Users (login, bitwiseRole, password) 
+		values (
+			#{login, jdbcType=VARCHAR},
+			#{bitwiseRole, jdbcType=INTEGER},
+			#{password, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="update">
+		update Users set
+			login = #{login, jdbcType=VARCHAR},
+			bitwiseRole = #{bitwiseRole, jdbcType=INTEGER}
+		where
+			id = #{id, jdbcType=INTEGER}
+	</update>
+	
+	<update id="updatePassword">
+		update Users set
+			password = #{password, jdbcType=VARCHAR}
+		where
+			id = #{userId, jdbcType=INTEGER}
+	</update>
+	
+	<delete id="delete">
+		delete
+		from Users
+		where
+			id = #{id, jdbcType=INTEGER}
+	</delete>
+</mapper>

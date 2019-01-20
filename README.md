@@ -18,3 +18,26 @@ Write a REST API that tracks jogging times of users
 	- The API filtering should allow using parenthesis for defining operations precedence and use any combination of the available fields. The supported operations should at least include or, and, eq (equals), ne (not equals), gt (greater than), lt (lower than).
 		Example -> `(date eq '2016-05-01') AND ((distance gt 20) OR (distance lt 10)).`
 - Write unit tests.
+
+# Git
+
+You can clone the project with:
+
+	git clone https://github.com/fazdevils/simple_web_service.git
+
+
+# Prerequisites
+
+* Java 8
+
+		
+# Build
+
+	mvn clean package
+
+
+# Run
+
+The app can be run from terminal using the Maven command:
+
+	mvn jetty:run
