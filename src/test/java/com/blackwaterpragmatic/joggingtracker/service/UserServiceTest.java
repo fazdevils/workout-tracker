@@ -44,7 +44,11 @@ public class UserServiceTest {
 	@Test
 	public void should_fetch_user() {
 		final Long userId = 1L;
-		final User expectedUser = new User();
+		final User expectedUser = new User() {
+			{
+				setBitwiseRole(0);
+			}
+		};
 
 		when(userMapper.fetch(userId)).thenReturn(expectedUser);
 

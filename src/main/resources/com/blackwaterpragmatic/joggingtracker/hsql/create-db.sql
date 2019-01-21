@@ -5,6 +5,7 @@ create table users (
     login varchar(80) not null,
     password varchar(80) not null,
     bitwiseRole integer default 0 not null,
+    active boolean default false not null,
     UNIQUE (login)
 );
 

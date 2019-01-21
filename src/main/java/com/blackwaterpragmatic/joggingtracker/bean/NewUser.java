@@ -7,16 +7,16 @@ import io.swagger.annotations.ApiModel;
 
 @ApiModel
 @JsonInclude(Include.NON_NULL)
-public class ValidationError {
+public class NewUser extends User {
 
-	private String message;
+	private String password;
 
-	public String getMessage() {
-		return message;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setMessage(final String message) {
-		this.message = message;
+	public void setPassword(final String password) {
+		this.password = password;
 	}
 
 }

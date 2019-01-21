@@ -62,7 +62,10 @@ public class AuthorizationProvider implements ContainerRequestFilter {
 		if (method.isAnnotationPresent(PermitAll.class)) {
 			return;
 		} else if (method.isAnnotationPresent(DenyAll.class)) {
-			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+			requestContext.abortWith(
+					responseHelper.build(
+							Response.Status.FORBIDDEN,
+							"Access denied to resource"));
 		} else if (method.isAnnotationPresent(RolesAllowed.class)) {
 			authorizeRoleAccess(requestContext, method);
 		} else {

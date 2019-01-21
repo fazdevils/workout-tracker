@@ -1,20 +1,16 @@
 package com.blackwaterpragmatic.joggingtracker.helper;
 
-import com.blackwaterpragmatic.joggingtracker.bean.ValidationError;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseErrorHelper {
 
-	public ValidationError reportDatabaseError(final DataAccessException databaseException) {
-		final ValidationError validationError = new ValidationError();
-		Throwable cause = databaseException.getCause();
-		if (null == cause) {
-			cause = databaseException;
+	public String getDatabaseError(final DataAccessException databaseException) {
+		Throwable cause = databaseException;
+		while (null != cause.getCause()) {
+			cause = databaseException.getCause();
 		}
-		validationError.setMessage(cause.getMessage());
-		return validationError;
+		return cause.getMessage();
 	}
 }

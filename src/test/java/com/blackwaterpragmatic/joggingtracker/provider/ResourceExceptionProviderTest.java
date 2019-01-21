@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.blackwaterpragmatic.joggingtracker.bean.ValidationError;
 import com.blackwaterpragmatic.joggingtracker.helper.DatabaseErrorHelper;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 import com.blackwaterpragmatic.joggingtracker.test.MockHelper;
@@ -90,11 +89,11 @@ public class ResourceExceptionProviderTest {
 
 	@Test
 	public void should_handle_data_access_exception() {
-		final ValidationError validationError = new ValidationError();
+		final String validationError = "validationError";
 		final Status badRequestError = Response.Status.BAD_REQUEST;
 		final Response expectedResponse = Response.status(badRequestError).build();
 
-		when(databaseErrorHelper.reportDatabaseError(dataAccessException)).thenReturn(validationError);
+		when(databaseErrorHelper.getDatabaseError(dataAccessException)).thenReturn(validationError);
 		when(responseHelper.build(badRequestError, validationError))
 				.thenReturn(expectedResponse);
 
@@ -103,7 +102,7 @@ public class ResourceExceptionProviderTest {
 		verify(dataAccessException, times(2)).getMessage();
 		verify(dataAccessException).getLocalizedMessage();
 		verify(dataAccessException).getStackTrace();
-		verify(databaseErrorHelper).reportDatabaseError(dataAccessException);
+		verify(databaseErrorHelper).getDatabaseError(dataAccessException);
 		verify(responseHelper).build(badRequestError, validationError);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 

@@ -3,8 +3,8 @@ package com.blackwaterpragmatic.joggingtracker.resource;
 import static com.blackwaterpragmatic.joggingtracker.constant.MediaType.JSON;
 import static com.blackwaterpragmatic.joggingtracker.constant.RoleName.USER_MANAGER;
 
-import com.blackwaterpragmatic.joggingtracker.bean.Error;
 import com.blackwaterpragmatic.joggingtracker.bean.User;
+import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 import com.blackwaterpragmatic.joggingtracker.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
 @Service
-@Path("/users")
+@Path("/user-management/users")
 @Api(value = "User Management",
 		authorizations = {
 				@Authorization(
@@ -36,11 +36,14 @@ import io.swagger.annotations.Authorization;
 public class UserManagementResource {
 
 	private final UserService userService;
+	private final ResponseHelper responseHelper;
 
 	@Autowired
 	public UserManagementResource(
-			final UserService userService) {
+			final UserService userService,
+			final ResponseHelper responseHelper) {
 		this.userService = userService;
+		this.responseHelper = responseHelper;
 	}
 
 	@RolesAllowed(USER_MANAGER)
@@ -61,14 +64,14 @@ public class UserManagementResource {
 	public Response getUsers() {
 		final List<User> users = userService.listUsers();
 
-		return Response.status(Response.Status.OK).entity(users).build();
+		return responseHelper.build(Response.Status.OK, users);
 	}
 
 	@RolesAllowed(USER_MANAGER)
 	@Path("/{userId}")
 	@GET
 	@Produces(JSON)
-	@ApiOperation(value = "Return a users")
+	@ApiOperation(value = "Return a user")
 	@ApiResponses({
 			@ApiResponse(
 					code = HttpServletResponse.SC_OK,
@@ -84,11 +87,9 @@ public class UserManagementResource {
 		final User user = userService.getUser(userId);
 
 		if (null == user) {
-			final Error error = new Error();
-			error.setMessage("User not found.");
-			return Response.status(Response.Status.NOT_FOUND).entity(error).build();
+			return responseHelper.build(Response.Status.NOT_FOUND, "User not found.");
 		} else {
-			return Response.status(Response.Status.OK).entity(user).build();
+			return responseHelper.build(Response.Status.OK, user);
 		}
 	}
 

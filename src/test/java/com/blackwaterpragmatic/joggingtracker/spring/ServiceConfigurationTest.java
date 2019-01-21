@@ -37,8 +37,6 @@ public class ServiceConfigurationTest {
 	@Test
 	public void should_instantiate_password_encryptor() {
 		assertNotNull(passwordEncryptor);
-		System.out.println(passwordEncryptor.encryptPassword("password"));
 	}
-
 
 }

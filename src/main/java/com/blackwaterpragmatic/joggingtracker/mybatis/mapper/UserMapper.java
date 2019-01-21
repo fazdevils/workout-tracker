@@ -1,5 +1,7 @@
 package com.blackwaterpragmatic.joggingtracker.mybatis.mapper;
 
+import com.blackwaterpragmatic.joggingtracker.bean.Credentials;
+import com.blackwaterpragmatic.joggingtracker.bean.NewUser;
 import com.blackwaterpragmatic.joggingtracker.bean.User;
 
 import org.apache.ibatis.annotations.Param;
@@ -12,13 +14,20 @@ public interface UserMapper {
 
 	User fetch(Long userId);
 
-	String fetchPassword(String login);
+	String fetchId(String login);
 
-	void insert(User user);
+	Credentials fetchStoredCredentials(String login);
 
-	void update(User user);
+	void insert(NewUser user);
+
+	void update(@Param("userId") Long userId, @Param("user") User user, @Param("isUserManager") Boolean isUserManager);
 
 	void updatePassword(@Param("userId") Long userId, @Param("password") String password);
 
 	void delete(Long userId);
+
+	void activate(Long userId);
+
+	void deactivate(Long userId);
+
 }

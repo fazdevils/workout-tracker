@@ -2,7 +2,6 @@ package com.blackwaterpragmatic.joggingtracker.provider;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-import com.blackwaterpragmatic.joggingtracker.bean.ValidationError;
 import com.blackwaterpragmatic.joggingtracker.helper.DatabaseErrorHelper;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 
@@ -51,8 +50,7 @@ public class ResourceExceptionProvider implements ExceptionMapper<Throwable> {
 			}
 			return responseHelper.build(Response.Status.BAD_REQUEST, message);
 		} else if (exception instanceof org.springframework.dao.DataAccessException) {
-			final ValidationError validationError = databaseErrorHelper.reportDatabaseError((DataAccessException) exception);
-			return responseHelper.build(Response.Status.BAD_REQUEST, validationError);
+			return responseHelper.build(Response.Status.BAD_REQUEST, databaseErrorHelper.getDatabaseError((DataAccessException) exception));
 		} else {
 			final Status internalServerError = Response.Status.INTERNAL_SERVER_ERROR;
 			return responseHelper.build(internalServerError, internalServerError.getReasonPhrase());

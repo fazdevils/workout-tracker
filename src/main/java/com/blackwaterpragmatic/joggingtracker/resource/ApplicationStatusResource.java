@@ -4,6 +4,7 @@ import static com.blackwaterpragmatic.joggingtracker.constant.MediaType.JSON;
 
 import com.blackwaterpragmatic.joggingtracker.bean.ApplicationStatus;
 import com.blackwaterpragmatic.joggingtracker.bean.internal.ApplicationEnvironment;
+import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,15 @@ import io.swagger.annotations.ApiOperation;
 public class ApplicationStatusResource {
 
 	private final ApplicationEnvironment applicationEnvironment;
+	private final ResponseHelper responseHelper;
 
 	@Autowired
-	public ApplicationStatusResource(final ApplicationEnvironment applicationEnvironment) {
+	public ApplicationStatusResource(
+			final ApplicationEnvironment applicationEnvironment,
+			final ResponseHelper responseHelper) {
 		this.applicationEnvironment = applicationEnvironment;
+		this.responseHelper = responseHelper;
 	}
-
 
 	@PermitAll
 	@Path("/")
@@ -42,7 +46,7 @@ public class ApplicationStatusResource {
 			}
 		};
 
-		return Response.status(Response.Status.OK).entity(applicationStatus).build();
+		return responseHelper.build(Response.Status.OK, applicationStatus);
 	}
 
 

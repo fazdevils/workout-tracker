@@ -1,4 +1,4 @@
-package com.blackwaterpragmatic.joggingtracker.resource;
+package com.blackwaterpragmatic.joggingtracker.swagger;
 
 import io.swagger.annotations.ApiKeyAuthDefinition;
 import io.swagger.annotations.ApiKeyAuthDefinition.ApiKeyLocation;

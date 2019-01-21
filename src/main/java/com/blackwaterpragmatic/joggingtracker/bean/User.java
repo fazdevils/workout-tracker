@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModel;
 
 @ApiModel
 @JsonIgnoreProperties(value = {
-		"bitwiseRole", "password"})
+		"bitwiseRole"})
 @JsonInclude(Include.NON_NULL)
 public class User {
 
@@ -20,7 +20,7 @@ public class User {
 	private String login;
 	private Set<Role> roles;
 	private Integer bitwiseRole;
-	private String password;
+	private Boolean active;
 
 	public Long getId() {
 		return id;
@@ -54,12 +54,12 @@ public class User {
 		this.bitwiseRole = bitwiseRole;
 	}
 
-	public String getPassword() {
-		return password;
+	public Boolean getActive() {
+		return active;
 	}
 
-	public void setPassword(final String password) {
-		this.password = password;
+	public void setActive(final Boolean active) {
+		this.active = active;
 	}
 
 }
