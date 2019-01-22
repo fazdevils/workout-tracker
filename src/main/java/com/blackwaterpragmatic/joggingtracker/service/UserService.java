@@ -41,7 +41,9 @@ public class UserService {
 
 	public User getUser(final Long userId) {
 		final User user = userMapper.fetch(userId);
-		user.setRoles(Role.getRoles(user.getBitwiseRole())); // TODO could probably make this mybatis type handler
+		if (null != user) {
+			user.setRoles(Role.getRoles(user.getBitwiseRole())); // TODO could probably make this mybatis type handler
+		}
 		return user;
 	}
 
@@ -83,8 +85,8 @@ public class UserService {
 
 	public String buildAuthenticationToken(final Credentials credentials, final String userAgent, final HttpServletRequest request) {
 		final Credentials storedCredentials = userMapper.fetchStoredCredentials(credentials.getLogin());
-		if (validPassword(credentials.getPassword(), storedCredentials.getPassword())) {
-			return tokenService.buildAuthenticationToken(userMapper.fetch(credentials.getUserId()), userAgent, request);
+		if ((null != storedCredentials) && validPassword(credentials.getPassword(), storedCredentials.getPassword())) {
+			return tokenService.buildAuthenticationToken(userMapper.fetch(storedCredentials.getUserId()), userAgent, request);
 		}
 		return null;
 	}

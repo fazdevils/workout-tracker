@@ -52,7 +52,7 @@ public class EnvironmentConfiguration {
 		beanConfig.setHost(applicationEnvironment.getApiHost());
 		beanConfig.setTitle(applicationEnvironment.getApiTitle());
 		beanConfig.setBasePath("/");
-		beanConfig.setResourcePackage("com.blackwaterpragmatic.joggingtracker.resource");
+		beanConfig.setResourcePackage("com.blackwaterpragmatic.joggingtracker.resource,com.blackwaterpragmatic.joggingtracker.swagger");
 		beanConfig.setScan(true);
 		return beanConfig;
 	}
