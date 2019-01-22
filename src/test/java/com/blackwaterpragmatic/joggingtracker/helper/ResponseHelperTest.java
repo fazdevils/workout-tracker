@@ -37,7 +37,6 @@ public class ResponseHelperTest {
 		assertEquals(MediaType.JSON, response.getMediaType().toString());
 	}
 
-
 	@Test
 	public void should_build_entity_location_response() throws URISyntaxException {
 		final URI testLocation = new URI("/test/uri");

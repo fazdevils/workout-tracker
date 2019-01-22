@@ -105,7 +105,6 @@
 			<property name="tokens" value="METHOD_DEF, VARIABLE_DEF, ANNOTATION_FIELD_DEF, INTERFACE_DEF, CLASS_DEF, ENUM_DEF"/>
 		</module>
 
-
 		<!-- Checks for blocks. You know, those {}'s         -->
 		<!-- See http://checkstyle.sf.net/config_blocks.html -->
 		<module name="AvoidNestedBlocks"/>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.blackwaterpragmatic.joggingtracker.mybatis.mapper.WorkoutMapper">
+
+	<select id="list" resultType="Workout">
+		select id, userId, dateMs, distance, duration, postalCode, weather
+		from Workout
+		order by dateMs, id
+	</select>
+
+	<select id="fetch" resultType="Workout">
+		select id, userId, dateMs, distance, duration, postalCode, weather
+		from Workout
+		where id = #{id, jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into Workout (userId, dateMs, distance, duration, postalCode, weather) 
+		values (
+			#{userId, jdbcType=INTEGER},
+			#{dateMs, jdbcType=INTEGER},
+			#{distance, jdbcType=DOUBLE},
+			#{duration, jdbcType=DOUBLE},
+			#{postalCode, jdbcType=VARCHAR},
+			#{weather, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update">
+		update Workout set
+			dateMs = #{dateMs, jdbcType=INTEGER},
+			distance = #{distance, jdbcType=DOUBLE},
+			duration = #{duration, jdbcType=DOUBLE},
+			postalCode = #{postalCode, jdbcType=VARCHAR},
+			weather = #{weather, jdbcType=VARCHAR}
+		where
+			id = #{id, jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete">
+		delete
+		from Workout
+		where
+			id = #{id, jdbcType=INTEGER}
+	</delete>
+
+</mapper>

@@ -192,7 +192,6 @@ public class UserMapperTest {
 		assertTrue(activeUser.getActive());
 	}
 
-
 	@Test
 	public void should_deactivate() {
 		final NewUser newUser = new NewUser() {
@@ -215,7 +214,6 @@ public class UserMapperTest {
 		final User inactiveUser = userMapper.fetch(newUser.getId());
 		assertFalse(inactiveUser.getActive());
 	}
-
 
 	private Long getFirstUserId() {
 		return userMapper.list().get(0).getId();

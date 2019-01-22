@@ -45,7 +45,6 @@ public class WebServiceInitializerTest {
 	@InjectMocks
 	private WebServiceInitializer webServiceInitializer;
 
-
 	@Test
 	public void should_initalize_web_service() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		when(servletContext.addFilter("RequestFilter", RequestFilter.class)).thenReturn(requestFilter);

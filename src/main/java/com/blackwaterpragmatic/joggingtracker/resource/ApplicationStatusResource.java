@@ -49,6 +49,5 @@ public class ApplicationStatusResource {
 		return responseHelper.build(Response.Status.OK, applicationStatus);
 	}
 
-
 }
 

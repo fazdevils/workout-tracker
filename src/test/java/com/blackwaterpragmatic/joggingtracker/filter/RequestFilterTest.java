@@ -48,7 +48,6 @@ public class RequestFilterTest {
 	@InjectMocks
 	private RequestFilter requestFilter;
 
-
 	@Test
 	public void should_init() {
 		requestFilter.init(filterConfig);

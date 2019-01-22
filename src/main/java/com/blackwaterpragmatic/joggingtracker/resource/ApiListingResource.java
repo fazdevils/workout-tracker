@@ -80,7 +80,6 @@ public class ApiListingResource extends BaseApiListingResource {
 		return new SwaggerServletConfig(servletContext);
 	}
 
-
 	/***
 	 * This is a bit of a hack, but needed, since Spring doesn't inject the ServletConfig
 	 * through the @Context annotation. This has something to do with the way the project
@@ -93,7 +92,6 @@ public class ApiListingResource extends BaseApiListingResource {
 	 */
 	private static class SwaggerServletConfig implements ServletConfig {
 		private final ServletContext servletContext;
-
 
 		SwaggerServletConfig(final ServletContext servletContext) {
 			this.servletContext = servletContext;

@@ -65,7 +65,8 @@ public class EnvironmentConfigurationTest {
 		assertEquals("localhost:8080", swaggerApiConfig.getHost());
 		assertEquals("Jogging Tracker API", swaggerApiConfig.getTitle());
 		assertEquals("/", swaggerApiConfig.getBasePath());
-		assertEquals("com.blackwaterpragmatic.joggingtracker.resource", swaggerApiConfig.getResourcePackage());
+		assertEquals("com.blackwaterpragmatic.joggingtracker.resource,com.blackwaterpragmatic.joggingtracker.swagger",
+				swaggerApiConfig.getResourcePackage());
 		assertEquals(true, swaggerApiConfig.getScan());
 
 	}

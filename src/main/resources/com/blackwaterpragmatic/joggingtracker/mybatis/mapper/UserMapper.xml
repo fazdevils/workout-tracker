@@ -30,7 +30,7 @@
 			#{active, jdbcType=BOOLEAN}
 		)
 	</insert>
-	
+
 	<update id="update">
 		update Users set
 			login = #{user.login, jdbcType=VARCHAR}
@@ -41,7 +41,7 @@
 		where
 			id = #{userId, jdbcType=INTEGER}
 	</update>
-	
+
 	<update id="updatePassword">
 		update Users set
 			password = #{password, jdbcType=VARCHAR}

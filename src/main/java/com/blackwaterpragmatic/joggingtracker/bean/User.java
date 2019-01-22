@@ -1,6 +1,5 @@
 package com.blackwaterpragmatic.joggingtracker.bean;
 
-
 import com.blackwaterpragmatic.joggingtracker.constant.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
