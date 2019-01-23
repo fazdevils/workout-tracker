@@ -19,9 +19,12 @@ public class SensitiveDataHelper {
 			final StringBuffer maskedRequestBody = new StringBuffer();
 
 			while (matcher.find()) {
-				matcher.appendReplacement(
-						maskedRequestBody,
-						matcher.group(0).replaceFirst(Pattern.quote(matcher.group(1)), SENSITIVE_DATA_MESSAGE));
+				final String redactedMatch = String.format("%s%s%s\"",
+						requestBody.substring(matcher.start(0), matcher.start(1)),
+						SENSITIVE_DATA_MESSAGE,
+						requestBody.substring(matcher.end(1), matcher.end(1)));
+				matcher.appendReplacement(maskedRequestBody, redactedMatch);
+
 			}
 			matcher.appendTail(maskedRequestBody); // append the rest of the contents
 			return maskedRequestBody.toString();
