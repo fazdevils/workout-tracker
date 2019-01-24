@@ -110,20 +110,6 @@ public class RequestFilterTest {
 	}
 
 	@Test
-	public void should_not_log_status_request() throws IOException, ServletException {
-		final String uriString = "/status";
-
-		when(request.getRequestURI()).thenReturn(uriString);
-
-		requestFilter.doFilter(request, response, chain);
-
-		verify(chain).doFilter(any(ContentCachingRequestWrapper.class), any(ServletResponse.class));
-		verify(request).getContentLength();
-		verify(request).getRequestURI();
-		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
-	}
-
-	@Test
 	public void should_not_log_base_request() throws IOException, ServletException {
 		final String uriString = "/";
 

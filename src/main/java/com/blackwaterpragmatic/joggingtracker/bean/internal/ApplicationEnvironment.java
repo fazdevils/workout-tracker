@@ -10,6 +10,7 @@ public class ApplicationEnvironment {
 	private String apiHost;
 	private String apiTitle;
 	private String buildTime;
+	private String weatherUrl;
 	private String env;
 
 	public String getJwtSignature() {
@@ -74,6 +75,14 @@ public class ApplicationEnvironment {
 
 	public void setBuildTime(final String buildTime) {
 		this.buildTime = buildTime;
+	}
+
+	public String getWeatherUrl() {
+		return weatherUrl;
+	}
+
+	public void setWeatherUrl(final String weatherUrl) {
+		this.weatherUrl = weatherUrl;
 	}
 
 	public String getEnv() {

@@ -44,6 +44,7 @@ public class EnvironmentConfigurationTest {
 		assertEquals("http", environment.getProperty("api_schemes"));
 		assertEquals("localhost:8080", environment.getProperty("api_host"));
 		assertEquals("Jogging Tracker API", environment.getProperty("api_title"));
+		assertEquals("http://localhost:8080", environment.getProperty("weather_url"));
 		assertNotNull(environment.getProperty("build_time"));
 
 		assertEquals("5A3M0\".n%R\"!C/S?WHJGJ=?=", applicationEnvironment.getJwtSignature());
@@ -53,6 +54,7 @@ public class EnvironmentConfigurationTest {
 		assertEquals("http", applicationEnvironment.getApiSchemes());
 		assertEquals("localhost:8080", applicationEnvironment.getApiHost());
 		assertEquals("Jogging Tracker API", applicationEnvironment.getApiTitle());
+		assertEquals("http://localhost:8080", applicationEnvironment.getWeatherUrl());
 		assertEquals("local", applicationEnvironment.getEnv());
 		assertNotNull(applicationEnvironment.getBuildTime());
 	}

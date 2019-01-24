@@ -77,8 +77,7 @@ public final class RequestFilter implements Filter {
 	}
 
 	private boolean shouldLogRequest(final String requestURI) {
-		return !requestURI.equalsIgnoreCase("/") &&
-				!requestURI.equalsIgnoreCase("/status");
+		return !requestURI.equalsIgnoreCase("/");
 	}
 
 	private void logRequest(

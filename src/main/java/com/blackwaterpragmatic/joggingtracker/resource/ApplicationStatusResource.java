@@ -26,8 +26,8 @@ public class ApplicationStatusResource {
 
 	@Autowired
 	public ApplicationStatusResource(
-			final ApplicationEnvironment applicationEnvironment,
-			final ResponseHelper responseHelper) {
+			final ResponseHelper responseHelper,
+			final ApplicationEnvironment applicationEnvironment) {
 		this.applicationEnvironment = applicationEnvironment;
 		this.responseHelper = responseHelper;
 	}

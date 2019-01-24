@@ -4,7 +4,7 @@ import static com.blackwaterpragmatic.joggingtracker.constant.MediaType.JSON;
 import static com.blackwaterpragmatic.joggingtracker.constant.RequestScopeAttribute.AUTHENTICATED_USER;
 import static com.blackwaterpragmatic.joggingtracker.constant.RoleName.USER;
 
-import com.blackwaterpragmatic.joggingtracker.bean.Credentials;
+import com.blackwaterpragmatic.joggingtracker.bean.Password;
 import com.blackwaterpragmatic.joggingtracker.bean.User;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 import com.blackwaterpragmatic.joggingtracker.service.UserService;
@@ -142,10 +142,10 @@ public class UserResource {
 					message = "Invalid token. Reauthenticate.")
 	})
 	public Response updatePassword(
-			@ApiParam(required = true) final Credentials credentials,
+			@ApiParam(required = true) final Password password,
 			@ApiParam(hidden = true) @Context final HttpServletRequest request) {
 		final User authenticatedUser = (User) request.getAttribute(AUTHENTICATED_USER);
-		userService.updatePassword(authenticatedUser.getId(), credentials.getPassword());
+		userService.updatePassword(authenticatedUser.getId(), password.getPassword());
 
 		return responseHelper.build(Response.Status.NO_CONTENT, null);
 	}

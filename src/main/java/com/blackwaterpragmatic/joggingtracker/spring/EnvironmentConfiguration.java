@@ -15,7 +15,7 @@ import io.swagger.jaxrs.config.BeanConfig;
 
 @Configuration
 @PropertySources({
-		@PropertySource(value = "classpath:application-${ENV2?:local}.properties")
+		@PropertySource(value = "classpath:application-${ENV?:local}.properties")
 })
 public class EnvironmentConfiguration {
 
@@ -38,8 +38,9 @@ public class EnvironmentConfiguration {
 		applicationEnvironment.setApiSchemes(environment.getProperty("api_schemes"));
 		applicationEnvironment.setApiHost(environment.getProperty("api_host"));
 		applicationEnvironment.setApiTitle(environment.getProperty("api_title"));
-		final String env = System.getProperty("ENV2");
+		final String env = System.getProperty("ENV");
 		applicationEnvironment.setEnv(null == env ? "local" : env);
+		applicationEnvironment.setWeatherUrl(environment.getProperty("weather_url"));
 		applicationEnvironment.setBuildTime(environment.getProperty("build_time"));
 		return applicationEnvironment;
 	}

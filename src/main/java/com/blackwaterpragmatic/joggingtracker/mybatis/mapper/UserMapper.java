@@ -14,8 +14,6 @@ public interface UserMapper {
 
 	User fetch(Long userId);
 
-	String fetchId(String login);
-
 	Credentials fetchStoredCredentials(String login);
 
 	void insert(NewUser user);
