@@ -42,7 +42,7 @@ public class MockWeatherResource {
 			@QueryParam("postalCode") final String postalCode) {
 
 		final WeatherCondition[] weatherConditions = WeatherCondition.values();
-		final WeatherCondition currentCondition = weatherConditions[random.nextInt(weatherConditions.length)];
+		final WeatherCondition currentCondition = weatherConditions[random.nextInt(weatherConditions.length + 1)]; // +1 to simulate random failure
 		final Weather weather = new Weather() {
 			{
 				setDateMs(dateMs);

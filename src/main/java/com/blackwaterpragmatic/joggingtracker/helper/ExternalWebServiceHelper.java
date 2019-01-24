@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -32,7 +31,7 @@ public class ExternalWebServiceHelper {
 				log.error(String.format("Invalid (%d) response from %s.", connection.getResponseCode(), url.toString()));
 				response.append("{}");
 			}
-		} catch (final IOException e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage(), e);
 		}
 		return null;
