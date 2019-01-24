@@ -18,7 +18,7 @@ public interface UserMapper {
 
 	void insert(NewUser user);
 
-	void update(@Param("userId") Long userId, @Param("user") User user, @Param("isUserManager") Boolean isUserManager);
+	void update(@Param("userId") Long userId, @Param("user") User user, @Param("asUserManager") Boolean asUserManager);
 
 	void updatePassword(@Param("userId") Long userId, @Param("password") String password);
 

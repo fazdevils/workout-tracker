@@ -47,9 +47,9 @@ public class UserService {
 		return user;
 	}
 
-	public User registerUser(final NewUser newUser, final boolean isUserManager) {
+	public User registerUser(final NewUser newUser, final boolean asUserManager) {
 		newUser.setActive(false);
-		if (isUserManager) {
+		if (asUserManager) {
 			newUser.setBitwiseRole(Role.getRoles(newUser.getRoles())); // TODO could probably make this mybatis type handler
 		} else {
 			newUser.setBitwiseRole(Role.USER.getBitwisePermission()); // TODO could probably make this mybatis type handler
@@ -59,11 +59,11 @@ public class UserService {
 		return getUser(newUser.getId());
 	}
 
-	public User updateUser(final Long userId, final User user, final boolean isUserManager) {
-		if (isUserManager) {
+	public User updateUser(final Long userId, final User user, final boolean asUserManager) {
+		if (asUserManager) {
 			user.setBitwiseRole(Role.getRoles(user.getRoles())); // TODO could probably make this mybatis type handler
 		}
-		userMapper.update(userId, user, isUserManager);
+		userMapper.update(userId, user, asUserManager);
 		return getUser(userId);
 	}
 

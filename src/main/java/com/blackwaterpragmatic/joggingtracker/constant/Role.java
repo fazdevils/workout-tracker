@@ -1,5 +1,7 @@
 package com.blackwaterpragmatic.joggingtracker.constant;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,12 +32,19 @@ public enum Role {
 	}
 
 	public static Integer getRoles(final Set<Role> roles) {
-		Integer bitwiseRole = 0x00000000;
 
+		if (roles.contains(ADMIN)) { // admins have all privileges
+			return getBitwiseRole(Arrays.asList(Role.values()));
+		} else {
+			return getBitwiseRole(roles);
+		}
+	}
+
+	private static Integer getBitwiseRole(final Collection<Role> roles) {
+		Integer bitwiseRole = 0x00000000;
 		for (final Role role : roles) {
 			bitwiseRole = bitwiseRole | role.getBitwisePermission();
 		}
-
 		return bitwiseRole;
 	}
 }

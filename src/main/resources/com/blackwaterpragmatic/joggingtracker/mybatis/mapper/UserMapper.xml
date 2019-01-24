@@ -34,7 +34,7 @@
 	<update id="update">
 		update Users set
 			login = #{user.login, jdbcType=VARCHAR}
-			<if test="isUserManager">
+			<if test="asUserManager">
 				, bitwiseRole = #{user.bitwiseRole, jdbcType=INTEGER}
 				, active = #{user.active, jdbcType=INTEGER}
 			</if>
