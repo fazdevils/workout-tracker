@@ -52,7 +52,7 @@ public class WorkoutService {
 		if (null == weatherResponse) {
 			return new Weather();
 		}
-		return jsonMapper.reader().forType(Weather.class).readValue(weatherResponse);
+		return jsonMapper.readValue(weatherResponse, Weather.class);
 	}
 
 }
