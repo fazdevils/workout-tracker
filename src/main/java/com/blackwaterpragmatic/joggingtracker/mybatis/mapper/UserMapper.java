@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserMapper {
 
-	List<User> list();
+	List<User> list(@Param("start") Integer start, @Param("max") Integer max);
 
 	User fetch(Long userId);
 

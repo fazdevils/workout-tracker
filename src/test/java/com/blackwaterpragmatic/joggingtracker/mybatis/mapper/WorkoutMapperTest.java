@@ -170,7 +170,7 @@ public class WorkoutMapperTest {
 	}
 
 	private Long getBasicUserId() {
-		final User basicUser = userMapper.list().get(1);
+		final User basicUser = userMapper.list(null, null).get(1);
 		assertEquals("basic user", basicUser.getLogin());
 		return basicUser.getId();
 	}

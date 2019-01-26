@@ -31,8 +31,8 @@ public class UserService {
 		this.passwordEncryptor = passwordEncryptor;
 	}
 
-	public List<User> listUsers() {
-		final List<User> users = userMapper.list();
+	public List<User> listUsers(final Integer start, final Integer max) {
+		final List<User> users = userMapper.list(start, max);
 		for (final User user : users) {
 			user.setRoles(Role.getRoles(user.getBitwiseRole())); // TODO could probably move these calls into mybatis type handler
 		}

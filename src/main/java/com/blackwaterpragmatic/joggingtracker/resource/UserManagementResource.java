@@ -20,6 +20,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import java.util.List;
@@ -40,6 +41,8 @@ import io.swagger.annotations.Authorization;
 		})
 public class UserManagementResource {
 
+	private static final String MAX = "max";
+	private static final String START = "start";
 	private static final String USER_ID = "userId";
 
 	private final UserService userService;
@@ -68,8 +71,10 @@ public class UserManagementResource {
 					code = HttpServletResponse.SC_UNAUTHORIZED,
 					message = "Invalid token. Reauthenticate.")
 	})
-	public Response getUsers() {
-		final List<User> users = userService.listUsers();
+	public Response getUsers(
+			@ApiParam(value = "The first result to return") @QueryParam(START) final Integer start,
+			@ApiParam(value = "The maximum number of results to return") @QueryParam(MAX) final Integer max) {
+		final List<User> users = userService.listUsers(start, max);
 
 		return responseHelper.build(Response.Status.OK, users);
 	}

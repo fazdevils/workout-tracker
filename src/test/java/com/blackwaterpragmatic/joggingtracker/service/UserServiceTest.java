@@ -59,11 +59,11 @@ public class UserServiceTest {
 
 		assertNull(expectedUser.getRoles());
 
-		when(userMapper.list()).thenReturn(expectedUsers);
+		when(userMapper.list(null, null)).thenReturn(expectedUsers);
 
-		final List<User> users = userService.listUsers();
+		final List<User> users = userService.listUsers(null, null);
 
-		verify(userMapper).list();
+		verify(userMapper).list(null, null);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(expectedUsers, users);

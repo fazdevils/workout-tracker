@@ -38,7 +38,7 @@ public class UserMapperTest {
 
 	@Test
 	public void should_list_users() {
-		final List<User> users = userMapper.list();
+		final List<User> users = userMapper.list(null, null);
 
 		assertEquals(4, users.size());
 
@@ -48,6 +48,26 @@ public class UserMapperTest {
 		assertEquals(Integer.valueOf(4), user.getBitwiseRole());
 		assertNull(user.getRoles());
 		assertTrue(user.getActive());
+	}
+
+	@Test
+	public void should_list_selected_users() {
+		final List<User> users = userMapper.list(0, 5);
+
+		assertEquals(4, users.size());
+
+		final User user = users.get(0);
+		assertNotNull(user.getId());
+		assertEquals("admin", user.getLogin());
+		assertEquals(Integer.valueOf(4), user.getBitwiseRole());
+		assertNull(user.getRoles());
+		assertTrue(user.getActive());
+
+		final List<User> moreUsers = userMapper.list(5, 5);
+		assertEquals(0, moreUsers.size());
+
+		final List<User> fewerUsers = userMapper.list(1, 5);
+		assertEquals(3, fewerUsers.size());
 	}
 
 	@Test
@@ -88,7 +108,7 @@ public class UserMapperTest {
 
 		assertNotNull(newUser.getId());
 
-		assertEquals(5, userMapper.list().size());
+		assertEquals(5, userMapper.list(null, null).size());
 
 		final User user = userMapper.fetch(newUser.getId());
 
@@ -166,7 +186,7 @@ public class UserMapperTest {
 
 		userMapper.delete(userId);
 
-		assertEquals(3, userMapper.list().size());
+		assertEquals(3, userMapper.list(null, null).size());
 	}
 
 	@Test
@@ -216,6 +236,6 @@ public class UserMapperTest {
 	}
 
 	private Long getFirstUserId() {
-		return userMapper.list().get(0).getId();
+		return userMapper.list(null, null).get(0).getId();
 	}
 }

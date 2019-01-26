@@ -6,6 +6,12 @@
 		select id, login, bitwiseRole, active
 		from Users
 		order by login
+		<if test="null != start">
+			offset #{start, jdbcType=INTEGER}
+		</if>
+		<if test="null != max">
+			limit #{max, jdbcType=INTEGER}
+		</if>
 	</select>
 
 	<select id="fetch" resultType="User">

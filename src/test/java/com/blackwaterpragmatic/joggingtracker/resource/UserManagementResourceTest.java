@@ -64,7 +64,7 @@ public class UserManagementResourceTest {
 			}
 		};
 
-		when(userService.listUsers()).thenReturn(users);
+		when(userService.listUsers(null, null)).thenReturn(users);
 
 		final String expectedResponse = new ObjectMapper().writeValueAsString(users);
 
@@ -73,7 +73,7 @@ public class UserManagementResourceTest {
 
 		dispatcher.invoke(request, response);
 
-		verify(userService).listUsers();
+		verify(userService).listUsers(null, null);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
