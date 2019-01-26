@@ -21,6 +21,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import java.io.IOException;
@@ -44,6 +45,8 @@ import io.swagger.annotations.Authorization;
 		})
 public class AdminResource {
 
+	private static final String MAX = "max";
+	private static final String START = "start";
 	private static final String USER_ID = "userId";
 	private static final String WORKOUT_ID = "workoutId";
 
@@ -125,8 +128,10 @@ public class AdminResource {
 					message = "Invalid token. Reauthenticate.")
 	})
 	public Response getAllWorkouta(
-			@PathParam(USER_ID) final Long userId) {
-		final List<Workout> workouts = workoutService.getWorkouts(userId);
+			@PathParam(USER_ID) final Long userId,
+			@ApiParam(value = "The first result to return") @QueryParam(START) final Integer start,
+			@ApiParam(value = "The maximum number of results to return") @QueryParam(MAX) final Integer max) {
+		final List<Workout> workouts = workoutService.getWorkouts(userId, start, max);
 
 		return responseHelper.build(Response.Status.OK, workouts);
 	}

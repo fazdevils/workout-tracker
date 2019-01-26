@@ -58,11 +58,11 @@ public class WorkoutServiceTest {
 		final Long userId = 1L;
 		final List<Workout> workouts = new ArrayList<>();
 
-		when(workoutMapper.list(userId)).thenReturn(workouts);
+		when(workoutMapper.list(userId, null, null)).thenReturn(workouts);
 
-		final List<Workout> allWorkouts = workoutService.getWorkouts(userId);
+		final List<Workout> allWorkouts = workoutService.getWorkouts(userId, null, null);
 
-		verify(workoutMapper).list(userId);
+		verify(workoutMapper).list(userId, null, null);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(workouts, allWorkouts);

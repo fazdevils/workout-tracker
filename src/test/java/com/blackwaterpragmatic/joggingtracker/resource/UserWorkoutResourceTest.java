@@ -67,7 +67,7 @@ public class UserWorkoutResourceTest {
 		final List<Workout> workouts = new ArrayList<>();
 
 		when(httpServletRequest.getAttribute(AUTHENTICATED_USER)).thenReturn(user);
-		when(workoutService.getWorkouts(userId)).thenReturn(workouts);
+		when(workoutService.getWorkouts(userId, null, null)).thenReturn(workouts);
 
 		final String expectedResponse = new ObjectMapper().writeValueAsString(workouts);
 
@@ -77,7 +77,7 @@ public class UserWorkoutResourceTest {
 		dispatcher.invoke(request, response);
 
 		verify(httpServletRequest).getAttribute(AUTHENTICATED_USER);
-		verify(workoutService).getWorkouts(userId);
+		verify(workoutService).getWorkouts(userId, null, null);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());

@@ -33,8 +33,8 @@ public class WorkoutService {
 		jsonMapper = new ObjectMapper();
 	}
 
-	public List<Workout> getWorkouts(final Long userId) {
-		return workoutMapper.list(userId);
+	public List<Workout> getWorkouts(final Long userId, final Integer start, final Integer max) {
+		return workoutMapper.list(userId, start, max);
 	}
 
 	public Workout getWorkout(final Long userId, final Long workoutId) {

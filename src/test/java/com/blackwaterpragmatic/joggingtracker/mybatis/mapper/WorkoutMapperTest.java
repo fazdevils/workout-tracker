@@ -38,7 +38,7 @@ public class WorkoutMapperTest {
 	@Test
 	public void should_list_workouts() {
 		final Long userId = getBasicUserId();
-		final List<Workout> workouts = workoutMapper.list(userId);
+		final List<Workout> workouts = workoutMapper.list(userId, null, null);
 
 		assertEquals(1, workouts.size());
 
@@ -53,9 +53,29 @@ public class WorkoutMapperTest {
 	}
 
 	@Test
+	public void should_list_selected_workouts() {
+		final Long userId = getBasicUserId();
+		final List<Workout> workouts = workoutMapper.list(userId, 0, 5);
+
+		assertEquals(1, workouts.size());
+
+		final Workout workout = workouts.get(0);
+		assertNotNull(workout.getId());
+		assertEquals(userId, workout.getUserId());
+		assertEquals(Long.valueOf(1), workout.getDateMs());
+		assertEquals(Double.valueOf(2.0), workout.getDistance());
+		assertEquals(Double.valueOf(3.0), workout.getDuration());
+		assertEquals("14004", workout.getPostalCode());
+		assertEquals("SUNNY", workout.getWeather());
+
+		final List<Workout> moreWorkouts = workoutMapper.list(userId, 1, 1);
+		assertEquals(0, moreWorkouts.size());
+	}
+
+	@Test
 	public void should_fetch_workout() {
 		final Long userId = getBasicUserId();
-		final Long workoutId = workoutMapper.list(userId).get(0).getId();
+		final Long workoutId = workoutMapper.list(userId, null, null).get(0).getId();
 
 		final Workout workout = workoutMapper.fetch(userId, workoutId);
 		assertEquals(workoutId, workout.getId());
@@ -84,7 +104,7 @@ public class WorkoutMapperTest {
 
 		workoutMapper.insert(newWorkout);
 
-		final List<Workout> workouts = workoutMapper.list(userId);
+		final List<Workout> workouts = workoutMapper.list(userId, null, null);
 		assertEquals(2, workouts.size());
 
 		final Workout workout = workoutMapper.fetch(userId, newWorkout.getId());
@@ -100,7 +120,7 @@ public class WorkoutMapperTest {
 	@Test
 	public void should_update() {
 		final Long userId = getBasicUserId();
-		final Long workoutId = workoutMapper.list(userId).get(0).getId();
+		final Long workoutId = workoutMapper.list(userId, null, null).get(0).getId();
 
 		final Workout workout = workoutMapper.fetch(userId, workoutId);
 		workout.setUserId(userId);
@@ -112,7 +132,7 @@ public class WorkoutMapperTest {
 
 		workoutMapper.update(workout);
 
-		final List<Workout> workouts = workoutMapper.list(userId);
+		final List<Workout> workouts = workoutMapper.list(userId, null, null);
 		assertEquals(1, workouts.size());
 
 		final Workout updatedWorkout = workoutMapper.fetch(userId, workoutId);
@@ -128,11 +148,11 @@ public class WorkoutMapperTest {
 	@Test
 	public void should_delete() {
 		final Long userId = getBasicUserId();
-		final Long workoutId = workoutMapper.list(userId).get(0).getId();
+		final Long workoutId = workoutMapper.list(userId, null, null).get(0).getId();
 
 		workoutMapper.delete(userId, workoutId);
 
-		final List<Workout> workouts = workoutMapper.list(userId);
+		final List<Workout> workouts = workoutMapper.list(userId, null, null);
 		assertEquals(0, workouts.size());
 
 		final Workout deletedWorkout = workoutMapper.fetch(userId, workoutId);
@@ -145,7 +165,7 @@ public class WorkoutMapperTest {
 
 		userMapper.delete(userId);
 
-		final List<Workout> workouts = workoutMapper.list(userId);
+		final List<Workout> workouts = workoutMapper.list(userId, null, null);
 		assertEquals(0, workouts.size());
 	}
 

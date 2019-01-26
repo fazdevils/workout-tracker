@@ -23,6 +23,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
@@ -47,6 +48,8 @@ import io.swagger.annotations.Authorization;
 		})
 public class UserWorkoutResource {
 
+	private static final String MAX = "max";
+	private static final String START = "start";
 	private static final String WORKOUT_ID = "workoutId";
 
 	private final WorkoutService workoutService;
@@ -98,10 +101,12 @@ public class UserWorkoutResource {
 					code = HttpServletResponse.SC_UNAUTHORIZED,
 					message = "Invalid token. Reauthenticate.")
 	})
-	public Response getAllWorkouta(
+	public Response getAllWorkouts(
+			@ApiParam(value = "The first result to return") @QueryParam(START) final Integer start,
+			@ApiParam(value = "The maximum number of results to return") @QueryParam(MAX) final Integer max,
 			@ApiParam(hidden = true) @Context final HttpServletRequest request) {
 		final User authenticatedUser = (User) request.getAttribute(AUTHENTICATED_USER);
-		final List<Workout> workouts = workoutService.getWorkouts(authenticatedUser.getId());
+		final List<Workout> workouts = workoutService.getWorkouts(authenticatedUser.getId(), start, max);
 
 		return responseHelper.build(Response.Status.OK, workouts);
 	}
