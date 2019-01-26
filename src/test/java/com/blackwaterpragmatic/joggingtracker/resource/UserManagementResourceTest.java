@@ -1,12 +1,17 @@
 package com.blackwaterpragmatic.joggingtracker.resource;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import com.blackwaterpragmatic.joggingtracker.bean.Password;
 import com.blackwaterpragmatic.joggingtracker.bean.ResponseMessage;
 import com.blackwaterpragmatic.joggingtracker.bean.User;
+import com.blackwaterpragmatic.joggingtracker.constant.MediaType;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 import com.blackwaterpragmatic.joggingtracker.service.UserService;
 import com.blackwaterpragmatic.joggingtracker.test.MockHelper;
@@ -104,7 +109,7 @@ public class UserManagementResourceTest {
 	}
 
 	@Test
-	public void should_return_404_for_missing_user() throws URISyntaxException, IOException {
+	public void should_not_get_missing_user() throws URISyntaxException, IOException {
 		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userManagementResource);
 
 		final Long id = 1L;
@@ -123,6 +128,111 @@ public class UserManagementResourceTest {
 
 		assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
 		assertEquals(expectedResponse, response.getContentAsString());
+	}
+
+	@Test
+	public void should_update_user() throws URISyntaxException, IOException {
+		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userManagementResource);
+
+		final Long userId = 1L;
+		final User user = new User() {
+			{
+				setId(userId);
+			}
+		};
+
+		when(userService.updateUser(any(User.class), eq(true))).thenReturn(user);
+
+		final String requestBody = new ObjectMapper().writeValueAsString(user);
+		final String expectedResponse = new ObjectMapper().writeValueAsString(user);
+
+		final MockHttpRequest request = MockHttpRequest.put("/user-management/users/" + userId)
+				.contentType(MediaType.JSON)
+				.content(requestBody.getBytes());
+		final MockHttpResponse response = new MockHttpResponse();
+
+		dispatcher.invoke(request, response);
+
+		verify(userService).updateUser(any(User.class), eq(true));
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		assertEquals(expectedResponse, response.getContentAsString());
+	}
+
+	@Test
+	public void should_not_update_missing_user() throws URISyntaxException, IOException {
+		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userManagementResource);
+
+		final Long userId = 1L;
+		final User user = new User() {
+			{
+				setId(userId);
+			}
+		};
+
+		when(userService.updateUser(any(User.class), eq(true))).thenReturn(null);
+
+		final String requestBody = new ObjectMapper().writeValueAsString(user);
+		final String expectedResponse = new ObjectMapper().writeValueAsString(new ResponseMessage("User not found."));
+
+		final MockHttpRequest request = MockHttpRequest.put("/user-management/users/" + userId)
+				.contentType(MediaType.JSON)
+				.content(requestBody.getBytes());
+		final MockHttpResponse response = new MockHttpResponse();
+
+		dispatcher.invoke(request, response);
+
+		verify(userService).updateUser(any(User.class), eq(true));
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+		assertEquals(expectedResponse, response.getContentAsString());
+	}
+
+	@Test
+	public void should_delete_user() throws URISyntaxException, IOException {
+		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userManagementResource);
+
+		final Long userId = 1L;
+
+		final MockHttpRequest request = MockHttpRequest.delete("/user-management/users/" + userId);
+		final MockHttpResponse response = new MockHttpResponse();
+
+		dispatcher.invoke(request, response);
+
+		verify(userService).deactivate(userId);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		assertTrue(response.getContentAsString().isEmpty());
+	}
+
+	@Test
+	public void should_update_password() throws URISyntaxException, IOException {
+		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userManagementResource);
+
+		final Long userId = 1L;
+		final Password password = new Password() {
+			{
+				setPassword("password");
+			}
+		};
+
+		final String requestBody = new ObjectMapper().writeValueAsString(password);
+
+		final MockHttpRequest request = MockHttpRequest.put("/user-management/users/1/password")
+				.contentType(MediaType.JSON)
+				.content(requestBody.getBytes());
+		final MockHttpResponse response = new MockHttpResponse();
+
+		dispatcher.invoke(request, response);
+
+		verify(userService).updatePassword(userId, "password");
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		assertTrue(response.getContentAsString().isEmpty());
 	}
 
 }

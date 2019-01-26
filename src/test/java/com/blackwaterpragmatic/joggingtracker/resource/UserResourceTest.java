@@ -170,7 +170,6 @@ public class UserResourceTest {
 		assertTrue(response.getContentAsString().isEmpty());
 	}
 
-
 	@Test
 	public void should_update_password() throws URISyntaxException, IOException {
 		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userResource);
