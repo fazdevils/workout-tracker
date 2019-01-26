@@ -5,6 +5,7 @@ import static com.blackwaterpragmatic.joggingtracker.constant.RoleName.ADMIN;
 
 import com.blackwaterpragmatic.joggingtracker.bean.Workout;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
+import com.blackwaterpragmatic.joggingtracker.service.UserService;
 import com.blackwaterpragmatic.joggingtracker.service.WorkoutService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +47,42 @@ public class AdminResource {
 	private static final String USER_ID = "userId";
 	private static final String WORKOUT_ID = "workoutId";
 
+	private final UserService userService;
 	private final WorkoutService workoutService;
 	private final ResponseHelper responseHelper;
 
 	@Autowired
 	public AdminResource(
+			final UserService userService,
 			final WorkoutService workoutService,
 			final ResponseHelper responseHelper) {
+		this.userService = userService;
 		this.workoutService = workoutService;
 		this.responseHelper = responseHelper;
+	}
+
+	@RolesAllowed(ADMIN)
+	@Path("/{" + USER_ID + "}")
+	@DELETE
+	@Consumes(JSON)
+	@Produces(JSON)
+	@ApiOperation(value = "Delete user")
+	@ApiResponses({
+			@ApiResponse(
+					code = HttpServletResponse.SC_NO_CONTENT,
+					message = "Success"),
+			@ApiResponse(
+					code = HttpServletResponse.SC_BAD_REQUEST,
+					message = "Bad request. Cause(s) returned in the response."),
+			@ApiResponse(
+					code = HttpServletResponse.SC_UNAUTHORIZED,
+					message = "Invalid token. Reauthenticate.")
+	})
+	public Response deleteUser(
+			@PathParam(USER_ID) final Long userId) {
+		userService.delete(userId);
+
+		return responseHelper.build(Response.Status.NO_CONTENT, null);
 	}
 
 	@RolesAllowed(ADMIN)

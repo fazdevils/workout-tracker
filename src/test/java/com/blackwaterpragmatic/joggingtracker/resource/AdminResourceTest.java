@@ -11,6 +11,7 @@ import com.blackwaterpragmatic.joggingtracker.bean.ResponseMessage;
 import com.blackwaterpragmatic.joggingtracker.bean.Workout;
 import com.blackwaterpragmatic.joggingtracker.constant.MediaType;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
+import com.blackwaterpragmatic.joggingtracker.service.UserService;
 import com.blackwaterpragmatic.joggingtracker.service.WorkoutService;
 import com.blackwaterpragmatic.joggingtracker.test.MockHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +38,9 @@ import java.util.List;
 public class AdminResourceTest {
 
 	@Mock
+	private UserService userService;
+
+	@Mock
 	private WorkoutService workoutService;
 
 	@Mock
@@ -47,9 +51,27 @@ public class AdminResourceTest {
 	@Before
 	public void before() {
 		// using ResponseHelper directly instead of mocking to verify actual response
-		adminResource = new AdminResource(workoutService, new ResponseHelper());
+		adminResource = new AdminResource(userService, workoutService, new ResponseHelper());
 
 		ResteasyProviderFactory.getContextDataMap().put(HttpServletRequest.class, httpServletRequest);
+	}
+
+	@Test
+	public void should_delete_user() throws URISyntaxException, IOException {
+		final Dispatcher dispatcher = MockHelper.createMockDispatcher(adminResource);
+
+		final Long userId = 1L;
+
+		final MockHttpRequest request = MockHttpRequest.delete("/admin/users/1");
+		final MockHttpResponse response = new MockHttpResponse();
+
+		dispatcher.invoke(request, response);
+
+		verify(userService).delete(userId);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		assertTrue(response.getContentAsString().isEmpty());
 	}
 
 	@Test

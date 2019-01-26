@@ -154,7 +154,6 @@ public class UserManagementResource {
 		return responseHelper.build(Response.Status.NO_CONTENT, null);
 	}
 
-
 	@RolesAllowed(USER_MANAGER)
 	@Path("/{" + USER_ID + "}/activate")
 	@POST
