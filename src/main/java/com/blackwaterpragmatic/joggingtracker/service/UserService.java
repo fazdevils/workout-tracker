@@ -34,7 +34,7 @@ public class UserService {
 	public List<User> listUsers() {
 		final List<User> users = userMapper.list();
 		for (final User user : users) {
-			user.setRoles(Role.getRoles(user.getBitwiseRole())); // TODO could probably make this mybatis type handler
+			user.setRoles(Role.getRoles(user.getBitwiseRole())); // TODO could probably move these calls into mybatis type handler
 		}
 		return users;
 	}
@@ -42,7 +42,7 @@ public class UserService {
 	public User getUser(final Long userId) {
 		final User user = userMapper.fetch(userId);
 		if (null != user) {
-			user.setRoles(Role.getRoles(user.getBitwiseRole())); // TODO could probably make this mybatis type handler
+			user.setRoles(Role.getRoles(user.getBitwiseRole()));
 		}
 		return user;
 	}
@@ -50,9 +50,9 @@ public class UserService {
 	public User registerUser(final NewUser newUser, final boolean asUserManager) {
 		newUser.setActive(false);
 		if (asUserManager) {
-			newUser.setBitwiseRole(Role.getRoles(newUser.getRoles())); // TODO could probably make this mybatis type handler
+			newUser.setBitwiseRole(Role.getRoles(newUser.getRoles()));
 		} else {
-			newUser.setBitwiseRole(Role.USER.getBitwisePermission()); // TODO could probably make this mybatis type handler
+			newUser.setBitwiseRole(Role.USER.getBitwisePermission());
 		}
 		newUser.setPassword(passwordEncryptor.encryptPassword(newUser.getPassword()));
 		userMapper.insert(newUser);
@@ -61,7 +61,7 @@ public class UserService {
 
 	public User updateUser(final User user, final boolean asUserManager) {
 		if (asUserManager) {
-			user.setBitwiseRole(Role.getRoles(user.getRoles())); // TODO could probably make this mybatis type handler
+			user.setBitwiseRole(Role.getRoles(user.getRoles()));
 		}
 		userMapper.update(user, asUserManager);
 		return getUser(user.getId());
