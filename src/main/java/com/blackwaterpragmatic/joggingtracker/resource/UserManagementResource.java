@@ -40,6 +40,8 @@ import io.swagger.annotations.Authorization;
 		})
 public class UserManagementResource {
 
+	private static final String USER_ID = "userId";
+
 	private final UserService userService;
 	private final ResponseHelper responseHelper;
 
@@ -73,7 +75,7 @@ public class UserManagementResource {
 	}
 
 	@RolesAllowed(USER_MANAGER)
-	@Path("/{userId}")
+	@Path("/{" + USER_ID + "}")
 	@GET
 	@Produces(JSON)
 	@ApiOperation(value = "Get a user")
@@ -88,7 +90,7 @@ public class UserManagementResource {
 					code = HttpServletResponse.SC_UNAUTHORIZED,
 					message = "Invalid token. Reauthenticate.")
 	})
-	public Response getUser(@PathParam("userId") final Long userId) {
+	public Response getUser(@PathParam(USER_ID) final Long userId) {
 		final User user = userService.getUser(userId);
 
 		if (null == user) {
@@ -99,7 +101,7 @@ public class UserManagementResource {
 	}
 
 	@RolesAllowed(USER_MANAGER)
-	@Path("/{userId}")
+	@Path("/{" + USER_ID + "}")
 	@PUT
 	@Consumes(JSON)
 	@Produces(JSON)
@@ -116,7 +118,7 @@ public class UserManagementResource {
 					message = "Invalid token. Reauthenticate.")
 	})
 	public Response updateUser(
-			@PathParam("userId") final Long userId,
+			@PathParam(USER_ID) final Long userId,
 			@ApiParam(required = true) final User user) {
 		user.setId(userId);
 		final User updatedUser = userService.updateUser(user, true);
@@ -129,7 +131,7 @@ public class UserManagementResource {
 	}
 
 	@RolesAllowed(USER_MANAGER)
-	@Path("/{userId}")
+	@Path("/{" + USER_ID + "}")
 	@DELETE
 	@Consumes(JSON)
 	@Produces(JSON)
@@ -146,14 +148,14 @@ public class UserManagementResource {
 					message = "Invalid token. Reauthenticate.")
 	})
 	public Response deactivateUser(
-			@PathParam("userId") final Long userId) {
+			@PathParam(USER_ID) final Long userId) {
 		userService.deactivate(userId);
 
 		return responseHelper.build(Response.Status.NO_CONTENT, null);
 	}
 
 	@RolesAllowed(USER_MANAGER)
-	@Path("/{userId}/password")
+	@Path("/{" + USER_ID + "}/password")
 	@PUT
 	@Consumes(JSON)
 	@Produces(JSON)
@@ -170,7 +172,7 @@ public class UserManagementResource {
 					message = "Invalid token. Reauthenticate.")
 	})
 	public Response updatePassword(
-			@PathParam("userId") final Long userId,
+			@PathParam(USER_ID) final Long userId,
 			@ApiParam(required = true) final Password password) {
 		userService.updatePassword(userId, password.getPassword());
 
