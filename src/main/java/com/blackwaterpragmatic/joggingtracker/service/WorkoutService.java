@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 @Service
 public class WorkoutService {
@@ -32,10 +33,27 @@ public class WorkoutService {
 		jsonMapper = new ObjectMapper();
 	}
 
+	public List<Workout> getWorkouts(final Long userId) {
+		return workoutMapper.list(userId);
+	}
+
+	public Workout getWorkout(final Long userId, final Long workoutId) {
+		return workoutMapper.fetch(userId, workoutId);
+	}
+
 	public Workout addWorkout(final Workout workout) throws IOException {
 		workout.setWeather(getWeather(workout.getDateMs(), workout.getPostalCode()));
 		workoutMapper.insert(workout);
 		return workout;
+	}
+
+	public Workout updateWorkout(final Workout workout) {
+		workoutMapper.update(workout);
+		return workout;
+	}
+
+	public void deleteWorkout(final Long userId, final Long workoutId) {
+		workoutMapper.delete(userId, workoutId);
 	}
 
 	private String getWeather(final Long dateMs, final String postalCode) throws IOException {

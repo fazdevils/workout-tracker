@@ -57,7 +57,7 @@ public class WorkoutMapperTest {
 		final Long userId = getBasicUserId();
 		final Long workoutId = workoutMapper.list(userId).get(0).getId();
 
-		final Workout workout = workoutMapper.fetch(workoutId);
+		final Workout workout = workoutMapper.fetch(userId, workoutId);
 		assertEquals(workoutId, workout.getId());
 		assertEquals(userId, workout.getUserId());
 		assertEquals(Long.valueOf(1), workout.getDateMs());
@@ -87,7 +87,7 @@ public class WorkoutMapperTest {
 		final List<Workout> workouts = workoutMapper.list(userId);
 		assertEquals(2, workouts.size());
 
-		final Workout workout = workoutMapper.fetch(newWorkout.getId());
+		final Workout workout = workoutMapper.fetch(userId, newWorkout.getId());
 		assertEquals(newWorkout.getId(), workout.getId());
 		assertEquals(newWorkout.getUserId(), workout.getUserId());
 		assertEquals(newWorkout.getDateMs(), workout.getDateMs());
@@ -102,8 +102,8 @@ public class WorkoutMapperTest {
 		final Long userId = getBasicUserId();
 		final Long workoutId = workoutMapper.list(userId).get(0).getId();
 
-		final Workout workout = workoutMapper.fetch(workoutId);
-		workout.setUserId(-1L); // not updated
+		final Workout workout = workoutMapper.fetch(userId, workoutId);
+		workout.setUserId(userId);
 		workout.setDateMs(26L);
 		workout.setDistance(26.1);
 		workout.setDuration(3.5);
@@ -115,7 +115,7 @@ public class WorkoutMapperTest {
 		final List<Workout> workouts = workoutMapper.list(userId);
 		assertEquals(1, workouts.size());
 
-		final Workout updatedWorkout = workoutMapper.fetch(workoutId);
+		final Workout updatedWorkout = workoutMapper.fetch(userId, workoutId);
 		assertEquals(workout.getId(), updatedWorkout.getId());
 		assertEquals(userId, updatedWorkout.getUserId());
 		assertEquals(workout.getDateMs(), updatedWorkout.getDateMs());
@@ -130,12 +130,12 @@ public class WorkoutMapperTest {
 		final Long userId = getBasicUserId();
 		final Long workoutId = workoutMapper.list(userId).get(0).getId();
 
-		workoutMapper.delete(workoutId);
+		workoutMapper.delete(userId, workoutId);
 
 		final List<Workout> workouts = workoutMapper.list(userId);
 		assertEquals(0, workouts.size());
 
-		final Workout deletedWorkout = workoutMapper.fetch(workoutId);
+		final Workout deletedWorkout = workoutMapper.fetch(userId, workoutId);
 		assertNull(deletedWorkout);
 	}
 

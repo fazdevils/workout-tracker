@@ -5,13 +5,16 @@
 	<select id="list" resultType="Workout">
 		select id, userId, dateMs, distance, duration, postalCode, weather
 		from Workout
+		where userId = #{userId, jdbcType=INTEGER}
 		order by dateMs, id
 	</select>
 
 	<select id="fetch" resultType="Workout">
 		select id, userId, dateMs, distance, duration, postalCode, weather
 		from Workout
-		where id = #{id, jdbcType=INTEGER}
+		where
+			id = #{workoutId, jdbcType=INTEGER}
+			and userId = #{userId, jdbcType=INTEGER}
 	</select>
 
 	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
@@ -35,13 +38,15 @@
 			weather = #{weather, jdbcType=VARCHAR}
 		where
 			id = #{id, jdbcType=INTEGER}
+			and userId = #{userId, jdbcType=INTEGER}
 	</update>
 
 	<delete id="delete">
 		delete
 		from Workout
 		where
-			id = #{id, jdbcType=INTEGER}
+			id = #{workoutId, jdbcType=INTEGER}
+			and userId = #{userId, jdbcType=INTEGER}
 	</delete>
 
 </mapper>

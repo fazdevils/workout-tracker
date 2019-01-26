@@ -23,6 +23,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WorkoutServiceTest {
@@ -49,6 +51,37 @@ public class WorkoutServiceTest {
 
 		verify(applicationEnvironment).getWeatherUrl();
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+	}
+
+	@Test
+	public void should_get_workouts() {
+		final Long userId = 1L;
+		final List<Workout> workouts = new ArrayList<>();
+
+		when(workoutMapper.list(userId)).thenReturn(workouts);
+
+		final List<Workout> allWorkouts = workoutService.getWorkouts(userId);
+
+		verify(workoutMapper).list(userId);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(workouts, allWorkouts);
+	}
+
+	@Test
+	public void should_get_workout() {
+		final Long userId = 1L;
+		final Long workoutId = 2L;
+		final Workout workout = new Workout();
+
+		when(workoutMapper.fetch(userId, workoutId)).thenReturn(workout);
+
+		final Workout fetchedWorkout = workoutService.getWorkout(userId, workoutId);
+
+		verify(workoutMapper).fetch(userId, workoutId);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(workout, fetchedWorkout);
 	}
 
 	@Test
@@ -82,7 +115,6 @@ public class WorkoutServiceTest {
 		assertEquals("http://localhost:8080/weather?dateMs=1&postalCode=postalCode", urlArgument.getValue().toString());
 	}
 
-
 	@Test
 	public void should_add_workout_with_unknown_weather() throws IOException {
 		final Workout newWorkout = new Workout() {
@@ -104,6 +136,29 @@ public class WorkoutServiceTest {
 		assertEquals(newWorkout, workout);
 		assertEquals("UNKNOWN", workout.getWeather());
 		assertEquals("http://localhost:8080/weather?dateMs=1&postalCode=postalCode", urlArgument.getValue().toString());
+	}
+
+	@Test
+	public void should_update_workout() {
+		final Workout workout = new Workout();
+
+		final Workout updatedWorkout = workoutService.updateWorkout(workout);
+
+		verify(workoutMapper).update(workout);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(workout, updatedWorkout);
+	}
+
+	@Test
+	public void should_delete_workout() {
+		final Long userId = 1L;
+		final Long workoutId = 2L;
+
+		workoutService.deleteWorkout(userId, workoutId);
+
+		verify(workoutMapper).delete(userId, workoutId);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 	}
 
 }
