@@ -1,43 +1,66 @@
 {
 	"info": {
-		"_postman_id": "587c743c-4eed-4a45-9223-10d482c189cf",
+		"_postman_id": "535a3ed6-0f33-4ac7-92d9-9cfbc76873aa",
 		"name": "Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "list users",
+			"name": "authenticate (everyhting)",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "ca05b0b4-dc59-4371-a323-ee5e63d02465",
-						"type": "text/javascript",
+						"id": "ec51b832-abb5-4b56-b162-728345a00786",
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
 							"});",
 							"",
 							"let jsonData = pm.response.json();",
-							"let firstUser =_.head(jsonData);",
-							"pm.environment.set(\"user_id\", firstUser.id );",
+							"pm.environment.set(\"token\", jsonData.token);",
 							""
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en_us"
+					},
+					{
+						"key": "User-Agent",
+						"value": "postman"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=utf-8"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json;charset=utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"login\": \"everything\",\r\n  \"password\": \"password\"\r\n}"
+				},
 				"url": {
-					"raw": "localhost:8080/users",
+					"raw": "localhost:8080/user/authenticate",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"users"
+						"user",
+						"authenticate"
 					]
 				}
 			},
@@ -50,38 +73,414 @@
 					"listen": "test",
 					"script": {
 						"id": "fb767581-6e9f-42bb-af2d-95a15b1c1375",
-						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
 							"",
-							"pm.test(\"Returns correct usere\", function () {",
+							"pm.test(\"Returns correct user\", function () {",
 							"    let jsonData = pm.response.json();",
 							"",
-							"    let userId = pm.environment.get(\"user_id\");",
-							"    pm.expect(jsonData.id).to.eql(userId);",
+							"    pm.expect(jsonData.login).to.eql('everything');",
 							"",
 							"});",
 							""
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": [],
-				"body": {},
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "postman",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "localhost:8080/users/{{user_id}}",
+					"raw": "localhost:8080/user",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user (user manager)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb767581-6e9f-42bb-af2d-95a15b1c1375",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Returns correct user\", function () {",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "postman"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/user-management/users/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user-management",
 						"users",
-						"{{user_id}}"
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get workout (admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb767581-6e9f-42bb-af2d-95a15b1c1375",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Returns correct user\", function () {",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData.length).to.eql(1);",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "postman"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/admin/users/0/workouts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"users",
+						"0",
+						"workouts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "authenticate (basic user)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ec51b832-abb5-4b56-b162-728345a00786",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"token\", jsonData.token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept-Language",
+						"value": "en_us"
+					},
+					{
+						"key": "User-Agent",
+						"value": "postman"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;charset=utf-8"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json;charset=utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"login\": \"basic user\",\r\n  \"password\": \"password\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/user/authenticate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb767581-6e9f-42bb-af2d-95a15b1c1375",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Returns correct user\", function () {",
+							"    let jsonData = pm.response.json();",
+							"",
+							"    pm.expect(jsonData.login).to.eql('basic user');",
+							"",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "postman"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user (user manager)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb767581-6e9f-42bb-af2d-95a15b1c1375",
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "postman"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/user-management/users/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user-management",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get workout (admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fb767581-6e9f-42bb-af2d-95a15b1c1375",
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"type": "text",
+						"value": "postman"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/user-management/users/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user-management",
+						"users",
+						"1"
 					]
 				}
 			},
