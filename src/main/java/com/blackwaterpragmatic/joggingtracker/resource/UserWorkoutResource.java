@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
 @Service
-@Path("/user/workout")
+@Path("/user/workouts")
 @Api(value = "User Settings",
 		authorizations = {
 				@Authorization(

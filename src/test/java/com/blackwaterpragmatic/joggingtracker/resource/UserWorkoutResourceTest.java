@@ -71,7 +71,7 @@ public class UserWorkoutResourceTest {
 
 		final String expectedResponse = new ObjectMapper().writeValueAsString(workouts);
 
-		final MockHttpRequest request = MockHttpRequest.get("/user/workout");
+		final MockHttpRequest request = MockHttpRequest.get("/user/workouts");
 		final MockHttpResponse response = new MockHttpResponse();
 
 		dispatcher.invoke(request, response);
@@ -106,7 +106,7 @@ public class UserWorkoutResourceTest {
 
 		final String expectedResponse = new ObjectMapper().writeValueAsString(workout);
 
-		final MockHttpRequest request = MockHttpRequest.get("/user/workout/2");
+		final MockHttpRequest request = MockHttpRequest.get("/user/workouts/2");
 		final MockHttpResponse response = new MockHttpResponse();
 
 		dispatcher.invoke(request, response);
@@ -137,7 +137,7 @@ public class UserWorkoutResourceTest {
 
 		final String expectedResponse = new ObjectMapper().writeValueAsString(error);
 
-		final MockHttpRequest request = MockHttpRequest.get("/user/workout/2");
+		final MockHttpRequest request = MockHttpRequest.get("/user/workouts/2");
 		final MockHttpResponse response = new MockHttpResponse();
 
 		dispatcher.invoke(request, response);
@@ -174,7 +174,7 @@ public class UserWorkoutResourceTest {
 		final String requestBody = new ObjectMapper().writeValueAsString(newWorkout);
 		final String expectedResponse = new ObjectMapper().writeValueAsString(workout);
 
-		final MockHttpRequest request = MockHttpRequest.post("/user/workout")
+		final MockHttpRequest request = MockHttpRequest.post("/user/workouts")
 				.contentType(MediaType.JSON)
 				.content(requestBody.getBytes());
 		final MockHttpResponse response = new MockHttpResponse();
@@ -214,7 +214,7 @@ public class UserWorkoutResourceTest {
 		final String requestBody = new ObjectMapper().writeValueAsString(updatedWorkout);
 		final String expectedResponse = new ObjectMapper().writeValueAsString(workout);
 
-		final MockHttpRequest request = MockHttpRequest.put("/user/workout/2")
+		final MockHttpRequest request = MockHttpRequest.put("/user/workouts/2")
 				.contentType(MediaType.JSON)
 				.content(requestBody.getBytes());
 		final MockHttpResponse response = new MockHttpResponse();
@@ -248,7 +248,7 @@ public class UserWorkoutResourceTest {
 		final String requestBody = new ObjectMapper().writeValueAsString(updatedWorkout);
 		final String expectedResponse = new ObjectMapper().writeValueAsString(error);
 
-		final MockHttpRequest request = MockHttpRequest.put("/user/workout/2")
+		final MockHttpRequest request = MockHttpRequest.put("/user/workouts/2")
 				.contentType(MediaType.JSON)
 				.content(requestBody.getBytes());
 		final MockHttpResponse response = new MockHttpResponse();
@@ -277,7 +277,7 @@ public class UserWorkoutResourceTest {
 
 		when(httpServletRequest.getAttribute(AUTHENTICATED_USER)).thenReturn(user);
 
-		final MockHttpRequest request = MockHttpRequest.delete("/user/workout/2");
+		final MockHttpRequest request = MockHttpRequest.delete("/user/workouts/2");
 		final MockHttpResponse response = new MockHttpResponse();
 
 		dispatcher.invoke(request, response);
