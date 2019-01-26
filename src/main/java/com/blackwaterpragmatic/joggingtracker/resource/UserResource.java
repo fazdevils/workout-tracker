@@ -97,7 +97,8 @@ public class UserResource {
 			@ApiParam(required = true) final User user,
 			@ApiParam(hidden = true) @Context final HttpServletRequest request) {
 		final User authenticatedUser = (User) request.getAttribute(AUTHENTICATED_USER);
-		final User updatedUser = userService.updateUser(authenticatedUser.getId(), user, false);
+		user.setId(authenticatedUser.getId());
+		final User updatedUser = userService.updateUser(user, false);
 
 		return responseHelper.build(Response.Status.OK, updatedUser);
 	}

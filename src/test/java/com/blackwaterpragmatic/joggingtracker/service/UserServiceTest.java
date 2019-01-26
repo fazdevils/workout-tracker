@@ -209,9 +209,9 @@ public class UserServiceTest {
 			}
 		};
 
-		userService.updateUser(userId, updatedUser, false);
+		userService.updateUser(updatedUser, false);
 
-		verify(userMapper).update(userId, updatedUser, false);
+		verify(userMapper).update(updatedUser, false);
 		verify(userMapper).fetch(userId);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
@@ -233,9 +233,9 @@ public class UserServiceTest {
 			}
 		};
 
-		userService.updateUser(userId, updatedUser, true);
+		userService.updateUser(updatedUser, true);
 
-		verify(userMapper).update(userId, updatedUser, true);
+		verify(userMapper).update(updatedUser, true);
 		verify(userMapper).fetch(userId);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 

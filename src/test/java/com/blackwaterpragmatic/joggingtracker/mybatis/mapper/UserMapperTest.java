@@ -107,16 +107,16 @@ public class UserMapperTest {
 		final User updatedUser = new User() {
 			{
 				setBitwiseRole(0); // will not update
-				setId(-1L); // will not update
+				setId(userId);
 				setLogin("updatedUser");
 				setActive(false); // will not update
 			}
 		};
 
-		userMapper.update(userId, updatedUser, false);
+		userMapper.update(updatedUser, false);
 		final User user = userMapper.fetch(userId);
 
-		assertNotEquals(updatedUser.getId(), user.getId());
+		assertEquals(updatedUser.getId(), user.getId());
 		assertEquals(userId, user.getId());
 		assertEquals(updatedUser.getLogin(), user.getLogin());
 		assertNotEquals(updatedUser.getBitwiseRole(), user.getBitwiseRole());
@@ -131,16 +131,16 @@ public class UserMapperTest {
 		final User updatedUser = new User() {
 			{
 				setBitwiseRole(0);
-				setId(-1L); // will not update
+				setId(userId);
 				setLogin("updatedUser");
 				setActive(false);
 			}
 		};
 
-		userMapper.update(userId, updatedUser, true);
+		userMapper.update(updatedUser, true);
 		final User user = userMapper.fetch(userId);
 
-		assertNotEquals(updatedUser.getId(), user.getId());
+		assertEquals(updatedUser.getId(), user.getId());
 		assertEquals(userId, user.getId());
 		assertEquals(updatedUser.getLogin(), user.getLogin());
 		assertEquals(updatedUser.getBitwiseRole(), user.getBitwiseRole());

@@ -39,7 +39,7 @@
 				, active = #{user.active, jdbcType=INTEGER}
 			</if>
 		where
-			id = #{userId, jdbcType=INTEGER}
+			id = #{user.id, jdbcType=INTEGER}
 	</update>
 
 	<update id="updatePassword">

@@ -59,12 +59,12 @@ public class UserService {
 		return getUser(newUser.getId());
 	}
 
-	public User updateUser(final Long userId, final User user, final boolean asUserManager) {
+	public User updateUser(final User user, final boolean asUserManager) {
 		if (asUserManager) {
 			user.setBitwiseRole(Role.getRoles(user.getRoles())); // TODO could probably make this mybatis type handler
 		}
-		userMapper.update(userId, user, asUserManager);
-		return getUser(userId);
+		userMapper.update(user, asUserManager);
+		return getUser(user.getId());
 	}
 
 	public void updatePassword(final Long userId, final String password) {

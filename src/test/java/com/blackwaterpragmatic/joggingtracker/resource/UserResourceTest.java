@@ -124,7 +124,7 @@ public class UserResourceTest {
 		};
 
 		when(httpServletRequest.getAttribute(AUTHENTICATED_USER)).thenReturn(user);
-		when(userService.updateUser(eq(userId), any(User.class), eq(false))).thenReturn(user);
+		when(userService.updateUser(any(User.class), eq(false))).thenReturn(user);
 
 		final String requestBody = new ObjectMapper().writeValueAsString(user);
 		final String expectedResponse = new ObjectMapper().writeValueAsString(user);
@@ -137,7 +137,7 @@ public class UserResourceTest {
 		dispatcher.invoke(request, response);
 
 		verify(httpServletRequest).getAttribute(AUTHENTICATED_USER);
-		verify(userService).updateUser(eq(userId), any(User.class), eq(false));
+		verify(userService).updateUser(any(User.class), eq(false));
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
