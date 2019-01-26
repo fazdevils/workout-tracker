@@ -33,7 +33,7 @@ import io.swagger.annotations.Authorization;
 
 @Service
 @Path("/user")
-@Api(value = "User Settings",
+@Api(value = "User",
 		authorizations = {
 				@Authorization(
 						value = "JWT")

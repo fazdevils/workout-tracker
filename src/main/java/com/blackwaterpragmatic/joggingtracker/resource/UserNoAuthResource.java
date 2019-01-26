@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
 
 @Service
 @Path("/user")
-@Api(value = "User Settings")
+@Api(value = "User")
 public class UserNoAuthResource {
 
 	private final UserService userService;
