@@ -53,7 +53,7 @@ public class MockWeatherResource {
 		return responseHelper.build(Response.Status.OK, weather);
 	}
 
-	private static enum WeatherCondition {
+	private enum WeatherCondition {
 		SUN,
 		RAIN,
 		SNOW,

@@ -94,7 +94,8 @@ public class UserNoAuthResourceTest {
 		final String userAgent = "userAgent";
 		final AuthenticationToken token = new AuthenticationToken(authenticationToken);
 
-		when(userService.buildAuthenticationToken(any(Credentials.class), eq(userAgent), any(HttpServletRequest.class))).thenReturn(authenticationToken);
+		when(userService.buildAuthenticationToken(any(Credentials.class), eq(userAgent), any(HttpServletRequest.class)))
+				.thenReturn(authenticationToken);
 
 		final String requestBody = new ObjectMapper().writeValueAsString(credentials);
 		final String expectedResponse = new ObjectMapper().writeValueAsString(token);
