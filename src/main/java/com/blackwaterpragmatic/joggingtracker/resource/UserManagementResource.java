@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -131,8 +131,8 @@ public class UserManagementResource {
 	}
 
 	@RolesAllowed(USER_MANAGER)
-	@Path("/{" + USER_ID + "}")
-	@DELETE
+	@Path("/{" + USER_ID + "}/deactivate")
+	@POST
 	@Consumes(JSON)
 	@Produces(JSON)
 	@ApiOperation(value = "Deactivate user")
@@ -150,6 +150,31 @@ public class UserManagementResource {
 	public Response deactivateUser(
 			@PathParam(USER_ID) final Long userId) {
 		userService.deactivate(userId);
+
+		return responseHelper.build(Response.Status.NO_CONTENT, null);
+	}
+
+
+	@RolesAllowed(USER_MANAGER)
+	@Path("/{" + USER_ID + "}/activate")
+	@POST
+	@Consumes(JSON)
+	@Produces(JSON)
+	@ApiOperation(value = "Activate user")
+	@ApiResponses({
+			@ApiResponse(
+					code = HttpServletResponse.SC_NO_CONTENT,
+					message = "Success"),
+			@ApiResponse(
+					code = HttpServletResponse.SC_BAD_REQUEST,
+					message = "Bad request. Cause(s) returned in the response."),
+			@ApiResponse(
+					code = HttpServletResponse.SC_UNAUTHORIZED,
+					message = "Invalid token. Reauthenticate.")
+	})
+	public Response activateUser(
+			@PathParam(USER_ID) final Long userId) {
+		userService.activate(userId);
 
 		return responseHelper.build(Response.Status.NO_CONTENT, null);
 	}

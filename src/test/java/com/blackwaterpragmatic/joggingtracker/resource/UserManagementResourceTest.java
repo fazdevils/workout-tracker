@@ -191,17 +191,37 @@ public class UserManagementResourceTest {
 	}
 
 	@Test
-	public void should_delete_user() throws URISyntaxException, IOException {
+	public void should_deactivate_user() throws URISyntaxException, IOException {
 		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userManagementResource);
 
 		final Long userId = 1L;
 
-		final MockHttpRequest request = MockHttpRequest.delete("/user-management/users/" + userId);
+		final MockHttpRequest request = MockHttpRequest.post("/user-management/users/1/deactivate")
+				.contentType(MediaType.JSON);
 		final MockHttpResponse response = new MockHttpResponse();
 
 		dispatcher.invoke(request, response);
 
 		verify(userService).deactivate(userId);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
+		assertTrue(response.getContentAsString().isEmpty());
+	}
+
+	@Test
+	public void should_activate_user() throws URISyntaxException, IOException {
+		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userManagementResource);
+
+		final Long userId = 1L;
+
+		final MockHttpRequest request = MockHttpRequest.post("/user-management/users/1/activate")
+				.contentType(MediaType.JSON);
+		final MockHttpResponse response = new MockHttpResponse();
+
+		dispatcher.invoke(request, response);
+
+		verify(userService).activate(userId);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
