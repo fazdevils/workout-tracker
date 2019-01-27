@@ -24,7 +24,7 @@ Write a REST API that tracks jogging times of users
 
 You can clone the project with:
 
-	git clone https://github.com/fazdevils/simple_web_service.git
+	git clone https://git.toptal.com/screening/vincent-fazio.git
 
 
 # Prerequisites
@@ -55,7 +55,7 @@ Mostly follow [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workfl
 
 ## Create a TEST release
 
-- `mvn gitflow:release-start` _(use your AWS Code Commit creds)_
+- `mvn gitflow:release-start`
 - update the Jenkins "release" target to build from the release branch.
 - verify the release
 - `mvn gitflow:release-finish`
@@ -70,7 +70,7 @@ Mostly follow [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workfl
 
 - prune to remove any old remote hotfix references (git fetch -p)
 - switch to master and pull to update
-- `mvn gitflow:hotfix-start` _(use your AWS Code Commit creds)_
+- `mvn gitflow:hotfix-start`
 - Apply the fix.
 - `mvn gitflow:hotfix-finish`
 	
