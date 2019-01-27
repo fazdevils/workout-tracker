@@ -2,6 +2,7 @@ package com.blackwaterpragmatic.joggingtracker.service;
 
 import com.blackwaterpragmatic.joggingtracker.bean.Weather;
 import com.blackwaterpragmatic.joggingtracker.bean.Workout;
+import com.blackwaterpragmatic.joggingtracker.bean.WorkoutReport;
 import com.blackwaterpragmatic.joggingtracker.bean.internal.ApplicationEnvironment;
 import com.blackwaterpragmatic.joggingtracker.helper.ExternalWebServiceHelper;
 import com.blackwaterpragmatic.joggingtracker.mybatis.mapper.WorkoutMapper;
@@ -12,7 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class WorkoutService {
@@ -71,6 +76,44 @@ public class WorkoutService {
 			return new Weather();
 		}
 		return jsonMapper.readValue(weatherResponse, Weather.class);
+	}
+
+	public List<WorkoutReport> createReport(final Long userId) {
+		final Map<String, WorkoutReport> workoutMap = new TreeMap<>();
+		final Calendar workoutDate = Calendar.getInstance();
+		for (final Workout workout : workoutMapper.list(userId, null, null)) {
+			workoutDate.setTimeInMillis(workout.getDateMs());
+			final Integer year = workoutDate.get(Calendar.YEAR);
+			final Integer week = workoutDate.get(Calendar.WEEK_OF_YEAR);
+			final String workoutKey = String.format("%d-%d", year, week);
+			final WorkoutReport workoutReport;
+			if (workoutMap.containsKey(workoutKey)) {
+				workoutReport = workoutMap.get(workoutKey);
+			} else {
+				workoutReport = new WorkoutReport() {
+					{
+						setUserId(userId);
+						setYear(year);
+						setWeek(week);
+						setWorkouts(0);
+						setTotalDistance(0.0);
+						setTotalDuration(0.0);
+					}
+				};
+				workoutMap.put(workoutKey, workoutReport);
+			}
+			workoutReport.setWorkouts(workoutReport.getWorkouts() + 1);
+			workoutReport.setTotalDistance(workoutReport.getTotalDistance() + workout.getDistance());
+			workoutReport.setTotalDuration(workoutReport.getTotalDuration() + workout.getDuration());
+		}
+		final List<WorkoutReport> fullWorkoutReport = new ArrayList<>();
+		for (final String workoutKey : workoutMap.keySet()) {
+			final WorkoutReport workoutReport = workoutMap.get(workoutKey);
+			workoutReport.setAverageDistance(workoutReport.getTotalDistance() / workoutReport.getWorkouts());
+			workoutReport.setAverageDuration(workoutReport.getTotalDuration() / workoutReport.getWorkouts());
+			fullWorkoutReport.add(workoutReport);
+		}
+		return fullWorkoutReport;
 	}
 
 }

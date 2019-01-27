@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import com.blackwaterpragmatic.joggingtracker.bean.ResponseMessage;
 import com.blackwaterpragmatic.joggingtracker.bean.User;
 import com.blackwaterpragmatic.joggingtracker.bean.Workout;
+import com.blackwaterpragmatic.joggingtracker.bean.WorkoutReport;
 import com.blackwaterpragmatic.joggingtracker.constant.MediaType;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 import com.blackwaterpragmatic.joggingtracker.service.WorkoutService;
@@ -288,6 +289,36 @@ public class UserWorkoutResourceTest {
 
 		assertEquals(Response.Status.NO_CONTENT.getStatusCode(), response.getStatus());
 		assertTrue(response.getContentAsString().isEmpty());
+	}
+
+	@Test
+	public void should_return_workout_report() throws URISyntaxException, IOException {
+		final Dispatcher dispatcher = MockHelper.createMockDispatcher(userWorkoutResource);
+
+		final Long userId = 1L;
+		final User user = new User() {
+			{
+				setId(userId);
+			}
+		};
+		final List<WorkoutReport> workoutReport = new ArrayList<>();
+
+		when(httpServletRequest.getAttribute(AUTHENTICATED_USER)).thenReturn(user);
+		when(workoutService.createReport(userId)).thenReturn(workoutReport);
+
+		final String expectedResponse = new ObjectMapper().writeValueAsString(workoutReport);
+
+		final MockHttpRequest request = MockHttpRequest.get("/user/workouts/report");
+		final MockHttpResponse response = new MockHttpResponse();
+
+		dispatcher.invoke(request, response);
+
+		verify(httpServletRequest).getAttribute(AUTHENTICATED_USER);
+		verify(workoutService).createReport(userId);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+		assertEquals(expectedResponse, response.getContentAsString());
 	}
 
 }

@@ -6,6 +6,7 @@ import static com.blackwaterpragmatic.joggingtracker.constant.RoleName.USER;
 
 import com.blackwaterpragmatic.joggingtracker.bean.User;
 import com.blackwaterpragmatic.joggingtracker.bean.Workout;
+import com.blackwaterpragmatic.joggingtracker.bean.WorkoutReport;
 import com.blackwaterpragmatic.joggingtracker.helper.ResponseHelper;
 import com.blackwaterpragmatic.joggingtracker.service.WorkoutService;
 
@@ -196,6 +197,31 @@ public class UserWorkoutResource {
 		workoutService.deleteWorkout(authenticatedUser.getId(), workoutId);
 
 		return responseHelper.build(Response.Status.NO_CONTENT, null);
+	}
+
+	@RolesAllowed(USER)
+	@Path("/report")
+	@GET
+	@Consumes(JSON)
+	@Produces(JSON)
+	@ApiOperation(value = "Return workout report")
+	@ApiResponses({
+			@ApiResponse(
+					code = HttpServletResponse.SC_NO_CONTENT,
+					message = "Success"),
+			@ApiResponse(
+					code = HttpServletResponse.SC_BAD_REQUEST,
+					message = "Bad request. Cause(s) returned in the response."),
+			@ApiResponse(
+					code = HttpServletResponse.SC_UNAUTHORIZED,
+					message = "Invalid token. Reauthenticate.")
+	})
+	public Response createReport(
+			@ApiParam(hidden = true) @Context final HttpServletRequest request) {
+		final User authenticatedUser = (User) request.getAttribute(AUTHENTICATED_USER);
+		final List<WorkoutReport> workoutReport = workoutService.createReport(authenticatedUser.getId());
+
+		return responseHelper.build(Response.Status.OK, workoutReport);
 	}
 
 }
