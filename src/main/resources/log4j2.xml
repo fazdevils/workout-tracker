@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%5p %d %C.%M(): %m%n" />
+		</Console>
+		<Console name="Request" target="SYSTEM_OUT">
+			<JSONMessageLayout prettyPrint="false" serverAddress="${sys:serverAddress}" env="${sys:ENV}"/>
+		</Console>
+	</Appenders>
+
+	<Loggers>
+		<Logger name="com.blackwaterpragmatic.joggingtracker.filter.RequestFilter" level="INFO" additivity="false">
+			<AppenderRef ref="Request"/>
+		</Logger>
+		<Root level="INFO">
+			<AppenderRef ref="Console"/>
+		</Root>
+	</Loggers>
+</Configuration>
