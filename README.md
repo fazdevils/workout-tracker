@@ -4,7 +4,7 @@
 
 Write a REST API that tracks jogging times of users
 
-- [COMPLETE] API Users must be able to create an account and log in.
+- [COMPLETE - NOTE: initial password are `password`] API Users must be able to create an account and log in.
 - [COMPLETE] All API calls must be authenticated.
 - [COMPLETE] Implement at least three roles with different permission levels:
   - a regular user would only be able to CRUD on their owned records
@@ -42,3 +42,35 @@ You can clone the project with:
 The app can be run from terminal using the Maven command:
 
 	mvn jetty:run
+
+	Options:
+
+		ENV: the environment settings file to read (i.e. specify -DENV=[ENV] to read properties from
+			 src/main/resources/application-[ENV].properties).  Any of the values in these files can
+			 be individually overridden by -D[PROPERTY]=[VALUE]
+
+# Release
+
+Mostly follow [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow "GitFlow") as implemented by [JGit Flow](https://bitbucket.org/atlassian/jgit-flow/wiki/goals.wiki)
+
+## Create a TEST release
+
+- `mvn gitflow:release-start` _(use your AWS Code Commit creds)_
+- update the Jenkins "release" target to build from the release branch.
+- verify the release
+- `mvn gitflow:release-finish`
+
+## Patch a TEST release
+
+- Create a feature branch off of the release branch for the fix.
+- Apply the fix to the feature branch.
+- Merge back to the release branch and then merge to develop.
+
+## HotFix a PRODUCTION Release
+
+- prune to remove any old remote hotfix references (git fetch -p)
+- switch to master and pull to update
+- `mvn gitflow:hotfix-start` _(use your AWS Code Commit creds)_
+- Apply the fix.
+- `mvn gitflow:hotfix-finish`
+	

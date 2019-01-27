@@ -9,7 +9,7 @@ public class DatabaseErrorHelper {
 	public String getDatabaseError(final DataAccessException databaseException) {
 		Throwable cause = databaseException;
 		while (null != cause.getCause()) {
-			cause = databaseException.getCause();
+			cause = databaseException.getMostSpecificCause();
 		}
 		return cause.getMessage();
 	}
