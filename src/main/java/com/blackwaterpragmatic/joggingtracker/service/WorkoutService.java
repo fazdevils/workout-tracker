@@ -61,23 +61,6 @@ public class WorkoutService {
 		workoutMapper.delete(userId, workoutId);
 	}
 
-	private String getWeather(final Long dateMs, final String postalCode) throws IOException {
-		final URL weatherUrl = new URL(String.format("%s/weather?dateMs=%s&postalCode=%s",
-				weatherUrlString,
-				dateMs,
-				postalCode));
-		final String weatherResponse = webServiceHelper.get(weatherUrl);
-		final Weather weather = parseWeatherResponse(weatherResponse);
-		return (null == weather.getWeather() ? "UNKNOWN" : weather.getWeather());
-	}
-
-	private Weather parseWeatherResponse(final String weatherResponse) throws IOException {
-		if (null == weatherResponse) {
-			return new Weather();
-		}
-		return jsonMapper.readValue(weatherResponse, Weather.class);
-	}
-
 	public List<WorkoutReport> createReport(final Long userId) {
 		final Map<String, WorkoutReport> workoutMap = new TreeMap<>();
 		final Calendar workoutDate = Calendar.getInstance();
@@ -114,6 +97,23 @@ public class WorkoutService {
 			fullWorkoutReport.add(workoutReport);
 		}
 		return fullWorkoutReport;
+	}
+
+	private String getWeather(final Long dateMs, final String postalCode) throws IOException {
+		final URL weatherUrl = new URL(String.format("%s/weather?dateMs=%s&postalCode=%s",
+				weatherUrlString,
+				dateMs,
+				postalCode));
+		final String weatherResponse = webServiceHelper.get(weatherUrl);
+		final Weather weather = parseWeatherResponse(weatherResponse);
+		return (null == weather.getWeather() ? "UNKNOWN" : weather.getWeather());
+	}
+
+	private Weather parseWeatherResponse(final String weatherResponse) throws IOException {
+		if (null == weatherResponse) {
+			return new Weather();
+		}
+		return jsonMapper.readValue(weatherResponse, Weather.class);
 	}
 
 }
