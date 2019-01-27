@@ -251,6 +251,15 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.4.9.v20180320</version>
 			</plugin>
+			<plugin>
+				<groupId>com.amashchenko.maven.plugin</groupId>
+				<artifactId>gitflow-maven-plugin</artifactId>
+				<version>1.10.0</version>
+				<configuration>
+					<commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
+					<versionDigitToIncrement>1</versionDigitToIncrement>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
