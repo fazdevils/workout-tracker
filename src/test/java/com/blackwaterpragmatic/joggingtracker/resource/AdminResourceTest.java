@@ -81,7 +81,7 @@ public class AdminResourceTest {
 		final Long userId = 1L;
 		final List<Workout> workouts = new ArrayList<>();
 
-		when(workoutService.getWorkouts(userId, null, null)).thenReturn(workouts);
+		when(workoutService.getWorkouts(userId, null, null, null)).thenReturn(workouts);
 
 		final String expectedResponse = new ObjectMapper().writeValueAsString(workouts);
 
@@ -90,7 +90,7 @@ public class AdminResourceTest {
 
 		dispatcher.invoke(request, response);
 
-		verify(workoutService).getWorkouts(userId, null, null);
+		verify(workoutService).getWorkouts(userId, null, null, null);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());

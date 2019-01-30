@@ -61,11 +61,41 @@ public class WorkoutServiceTest {
 		final Long userId = 1L;
 		final List<Workout> workouts = new ArrayList<>();
 
-		when(workoutMapper.list(userId, null, null)).thenReturn(workouts);
+		when(workoutMapper.list(userId, null, null, null)).thenReturn(workouts);
 
-		final List<Workout> allWorkouts = workoutService.getWorkouts(userId, null, null);
+		final List<Workout> allWorkouts = workoutService.getWorkouts(userId, null, null, null);
 
-		verify(workoutMapper).list(userId, null, null);
+		verify(workoutMapper).list(userId, null, null, null);
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(workouts, allWorkouts);
+	}
+
+	@Test
+	public void should_get_filtered_workouts() {
+		final Long userId = 1L;
+		final List<Workout> workouts = new ArrayList<>();
+
+		when(workoutMapper.list(userId, null, null, "(date = 1) AND ((distance > 20) OR (distance < 10)) AND (duration != 2)")).thenReturn(workouts);
+
+		final List<Workout> allWorkouts = workoutService.getWorkouts(userId, null, null, "(date eq 1) AND ((distance gt 20) OR (distance lt 10)) AND (duration ne 2)");
+
+		verify(workoutMapper).list(userId, null, null, "(date = 1) AND ((distance > 20) OR (distance < 10)) AND (duration != 2)");
+		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
+
+		assertEquals(workouts, allWorkouts);
+	}
+
+	@Test
+	public void should_get_filtered_workouts_with_sql_issue() {
+		final Long userId = 1L;
+		final List<Workout> workouts = new ArrayList<>();
+
+		when(workoutMapper.list(userId, null, null, "\\\\ ''")).thenReturn(workouts);
+
+		final List<Workout> allWorkouts = workoutService.getWorkouts(userId, null, null, "\\ '");
+
+		verify(workoutMapper).list(userId, null, null, "\\\\ ''");
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(workouts, allWorkouts);
@@ -205,11 +235,11 @@ public class WorkoutServiceTest {
 			}
 		};
 
-		when(workoutMapper.list(userId, null, null)).thenReturn(workouts);
+		when(workoutMapper.list(userId, null, null, null)).thenReturn(workouts);
 
 		final List<WorkoutReport> workoutReport = workoutService.createReport(userId);
 
-		verify(workoutMapper).list(userId, null, null);
+		verify(workoutMapper).list(userId, null, null, null);
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(2, workoutReport.size());

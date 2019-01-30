@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface WorkoutMapper {
 
-	List<Workout> list(@Param("userId") Long userId, @Param("start") Integer start, @Param("max") Integer max);
+	List<Workout> list(@Param("userId") Long userId, @Param("start") Integer start, @Param("max") Integer max, @Param("filter") String filter);
 
 	Workout fetch(@Param("userId") Long userId, @Param("workoutId") Long workoutId);
 

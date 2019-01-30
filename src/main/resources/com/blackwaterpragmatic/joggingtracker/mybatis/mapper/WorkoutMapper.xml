@@ -6,6 +6,9 @@
 		select id, userId, dateMs, distance, duration, postalCode, weather
 		from Workout
 		where userId = #{userId, jdbcType=INTEGER}
+		<if test="null != filter">
+			and ${filter}
+		</if>
 		order by dateMs, id
 		<if test="null != start">
 			offset #{start, jdbcType=INTEGER}

@@ -38,8 +38,19 @@ public class WorkoutService {
 		jsonMapper = new ObjectMapper();
 	}
 
-	public List<Workout> getWorkouts(final Long userId, final Integer start, final Integer max) {
-		return workoutMapper.list(userId, start, max);
+	public List<Workout> getWorkouts(final Long userId, final Integer start, final Integer max, final String filter) {
+		final String sqlFilter;
+		if (filter == null) {
+			sqlFilter = null;
+		} else {
+			final String eqFilter = filter.replaceAll("eq", "=");
+			final String neFilter = eqFilter.replaceAll("ne", "!=");
+			final String gtFilter = neFilter.replaceAll("gt", ">");
+			final String ltFilter = gtFilter.replaceAll("lt", "<");
+			final String slashFilter = ltFilter.replaceAll("\\\\", "\\\\\\\\");
+			sqlFilter = slashFilter.replaceAll("'", "''"); // TODO flush this out a bit more
+		}
+		return workoutMapper.list(userId, start, max, sqlFilter);
 	}
 
 	public Workout getWorkout(final Long userId, final Long workoutId) {
@@ -64,7 +75,7 @@ public class WorkoutService {
 	public List<WorkoutReport> createReport(final Long userId) {
 		final Map<String, WorkoutReport> workoutMap = new TreeMap<>();
 		final Calendar workoutDate = Calendar.getInstance();
-		for (final Workout workout : workoutMapper.list(userId, null, null)) {
+		for (final Workout workout : workoutMapper.list(userId, null, null, null)) {
 			workoutDate.setTimeInMillis(workout.getDateMs());
 			final Integer year = workoutDate.get(Calendar.YEAR);
 			final Integer week = workoutDate.get(Calendar.WEEK_OF_YEAR);

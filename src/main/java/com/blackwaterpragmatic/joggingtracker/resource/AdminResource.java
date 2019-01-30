@@ -45,6 +45,7 @@ import io.swagger.annotations.Authorization;
 		})
 public class AdminResource {
 
+	private static final String FILTER = "filter";
 	private static final String MAX = "max";
 	private static final String START = "start";
 	private static final String USER_ID = "userId";
@@ -130,8 +131,9 @@ public class AdminResource {
 	public Response getAllWorkouta(
 			@PathParam(USER_ID) final Long userId,
 			@ApiParam(value = "The first result to return") @QueryParam(START) final Integer start,
-			@ApiParam(value = "The maximum number of results to return") @QueryParam(MAX) final Integer max) {
-		final List<Workout> workouts = workoutService.getWorkouts(userId, start, max);
+			@ApiParam(value = "The maximum number of results to return") @QueryParam(MAX) final Integer max,
+			@ApiParam(value = "Filter the results to return") @QueryParam(FILTER) final String filter) {
+		final List<Workout> workouts = workoutService.getWorkouts(userId, start, max, filter);
 
 		return responseHelper.build(Response.Status.OK, workouts);
 	}
