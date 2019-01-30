@@ -49,6 +49,7 @@ import io.swagger.annotations.Authorization;
 		})
 public class UserWorkoutResource {
 
+	private static final String FILTER = "filter";
 	private static final String MAX = "max";
 	private static final String START = "start";
 	private static final String WORKOUT_ID = "workoutId";
@@ -105,9 +106,10 @@ public class UserWorkoutResource {
 	public Response getAllWorkouts(
 			@ApiParam(value = "The first result to return") @QueryParam(START) final Integer start,
 			@ApiParam(value = "The maximum number of results to return") @QueryParam(MAX) final Integer max,
+			@ApiParam(value = "Filter the results to return") @QueryParam(FILTER) final String filter,
 			@ApiParam(hidden = true) @Context final HttpServletRequest request) {
 		final User authenticatedUser = (User) request.getAttribute(AUTHENTICATED_USER);
-		final List<Workout> workouts = workoutService.getWorkouts(authenticatedUser.getId(), start, max);
+		final List<Workout> workouts = workoutService.getWorkouts(authenticatedUser.getId(), start, max, filter);
 
 		return responseHelper.build(Response.Status.OK, workouts);
 	}
