@@ -76,11 +76,12 @@ public class WorkoutServiceTest {
 		final Long userId = 1L;
 		final List<Workout> workouts = new ArrayList<>();
 
-		when(workoutMapper.list(userId, null, null, "(date = 1) AND ((distance > 20) OR (distance < 10)) AND (duration != 2)")).thenReturn(workouts);
+		when(workoutMapper.list(userId, null, null, "(dateMs = 1) AND ((distance > 20) OR (distance < 10)) AND (duration != 2)")).thenReturn(workouts);
 
-		final List<Workout> allWorkouts = workoutService.getWorkouts(userId, null, null, "(date eq 1) AND ((distance gt 20) OR (distance lt 10)) AND (duration ne 2)");
+		final List<Workout> allWorkouts = workoutService.getWorkouts(userId, null, null,
+				"(dateMs eq 1) AND ((distance gt 20) OR (distance lt 10)) AND (duration ne 2)");
 
-		verify(workoutMapper).list(userId, null, null, "(date = 1) AND ((distance > 20) OR (distance < 10)) AND (duration != 2)");
+		verify(workoutMapper).list(userId, null, null, "(dateMs = 1) AND ((distance > 20) OR (distance < 10)) AND (duration != 2)");
 		verifyNoMoreInteractions(MockHelper.allDeclaredMocks(this));
 
 		assertEquals(workouts, allWorkouts);
