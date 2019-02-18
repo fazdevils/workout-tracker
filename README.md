@@ -1,8 +1,8 @@
-# jogging-tracker
+# workout-tracker
 
 ## Requirements ##
 
-Write a REST API that tracks jogging times of users
+Write a REST API that tracks workout times of users
 
 - [COMPLETE - NOTE: initial password are `password`] API Users must be able to create an account and log in.
 - [COMPLETE] All API calls must be authenticated.
@@ -24,7 +24,7 @@ Write a REST API that tracks jogging times of users
 
 You can clone the project with:
 
-	git clone https://git.toptal.com/screening/vincent-fazio.git
+	git clone https://github.com/fazdevils/workout-tracker.git
 
 
 # Prerequisites
