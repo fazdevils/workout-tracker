@@ -10,7 +10,7 @@
 	</Appenders>
 
 	<Loggers>
-		<Logger name="com.blackwaterpragmatic.joggingtracker.filter.RequestFilter" level="INFO" additivity="false">
+		<Logger name="com.blackwaterpragmatic.workouttracker.filter.RequestFilter" level="INFO" additivity="false">
 			<AppenderRef ref="Request"/>
 		</Logger>
 		<Root level="INFO">
